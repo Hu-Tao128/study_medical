@@ -1,0 +1,11 @@
+{
+    "appTitle": "Estudio Médico",
+    "homeTitle": "Inicio",
+    "flashcardsTitle": "Tarjetas",
+    "quizzesTitle": "Cuestionarios",
+    "casesTitle": "Casos Clínicos",
+    "settingsTitle": "Configuración",
+    "welcomeMessage": "¡Bienvenido, Estudiante!",
+    "comingSoon": "¡{feature} próximamente!",
+    "logoutButton": "Cerrar Sesión"
+}

@@ -1,0 +1,11 @@
+{
+    "appTitle": "Study Medical",
+    "homeTitle": "Home",
+    "flashcardsTitle": "Flashcards",
+    "quizzesTitle": "Quizzes",
+    "casesTitle": "Clinical Cases",
+    "settingsTitle": "Settings",
+    "welcomeMessage": "Welcome, Student!",
+    "comingSoon": "{feature} coming soon!",
+    "logoutButton": "Log Out"
+}
