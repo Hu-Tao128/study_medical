@@ -14,6 +14,22 @@ migrate_working_dir/
 
 # IntelliJ related
 *.iml
+*.ipr# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
 *.ipr
 *.iws
 .idea/
@@ -43,3 +59,46 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+.env
+*.iws
+.idea/
+
+# VS Code - Recomendado descomentar para evitar conflictos de config personal
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Android específico (Faltaba local.properties)
+android/local.properties
+android/key.properties
+*.jks
+*.keystore
+
+# iOS específico (Faltaban los Pods si usas Mac)
+ios/Pods/
+ios/.test_runtime
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+
+# Symbolication / Obfuscation
+app.*.symbols
+app.*.map.json
+
+# Build artifacts
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Secretos
+.env
+.env.*
