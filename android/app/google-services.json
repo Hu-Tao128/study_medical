@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "737646867874",
+    "project_id": "studymedical",
+    "storage_bucket": "studymedical.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737646867874:android:b3dd1c0cf39cf78ff0eefb",
+        "android_client_info": {
+          "package_name": "com.example.study_medical"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSRJBBbqfrhjF8vLWhrokCqrkeniDgvnM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
