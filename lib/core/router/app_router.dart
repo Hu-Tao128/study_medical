@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/login_page.dart';
+import '../../features/auth/presentation/register_page.dart';
 import '../../features/auth/data/auth_service.dart';
 import '../../features/home/presentation/main_shell.dart';
 import '../../features/home/presentation/home_page.dart';
@@ -20,12 +21,13 @@ GoRouter appRouter(AuthService authService) {
     redirect: (context, state) {
       final bool isLoggedIn = authService.isAuthenticated;
       final bool isLoggingIn = state.uri.path == '/login';
+      final bool isRegistering = state.uri.path == '/register';
 
-      if (!isLoggedIn && !isLoggingIn) {
+      if (!isLoggedIn && !isLoggingIn && !isRegistering) {
         return '/login';
       }
 
-      if (isLoggedIn && isLoggingIn) {
+      if (isLoggedIn && (isLoggingIn || isRegistering)) {
         return '/home';
       }
 
@@ -33,6 +35,10 @@ GoRouter appRouter(AuthService authService) {
     },
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+      GoRoute(
+        path: '/register',
+        builder: (context, state) => const RegisterPage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainShell(navigationShell: navigationShell);

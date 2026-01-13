@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../auth/data/auth_service.dart';
 
@@ -72,6 +73,38 @@ class _LoginPageState extends State<LoginPage> {
               const CircularProgressIndicator()
             else
               ElevatedButton(onPressed: _login, child: const Text('Sign In')),
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              icon: const Icon(Icons.login),
+              label: const Text('Sign in with Google'),
+              onPressed: () async {
+                setState(() {
+                  _isLoading = true;
+                });
+                try {
+                  await context.read<AuthService>().signInWithGoogle();
+                } catch (e) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Google Sign-In failed: ${e.toString()}'),
+                      ),
+                    );
+                  }
+                } finally {
+                  if (mounted) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                }
+              },
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              onPressed: () => context.go('/register'),
+              child: const Text('Don\'t have an account? Register'),
+            ),
           ],
         ),
       ),
