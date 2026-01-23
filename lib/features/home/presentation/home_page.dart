@@ -9,7 +9,26 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.appTitle), centerTitle: true),
+      appBar: AppBar(
+        title: Text(l10n.appTitle),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            // Notifications icon
+            onPressed: () {
+              // Handle notification button press
+            },
+            icon: Icon(Icons.notifications),
+          ),
+          IconButton(
+            // Messages icon
+            onPressed: () {
+              // Handle messages button press
+            },
+            icon: Icon(Icons.message),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
