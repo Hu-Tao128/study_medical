@@ -104,3 +104,9 @@ app.*.map.json
 .env.*
 
 firebase.json
+
+# Firebase credentials (bajar de Firebase Console por entorno)
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+ios/Runner/GoogleService-Info-dev.plist
+ios/Runner/GoogleService-Info-prod.plist
