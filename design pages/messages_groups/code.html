@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Medical Study Messaging</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col max-w-md mx-auto border-x border-slate-200 dark:border-slate-800 shadow-xl overflow-x-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 pt-6 pb-2">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">medical_services</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Messages</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">edit_square</span>
+</button>
+</div>
+<!-- Search Bar -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 text-xl">search</span>
+</div>
+<input class="block w-full pl-10 pr-4 py-2.5 bg-slate-200/50 dark:bg-slate-800/50 border-none rounded-xl focus:ring-2 focus:ring-primary/50 text-sm placeholder:text-slate-500" placeholder="Search medical groups or doctors" type="text"/>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-slate-200 dark:border-slate-800 mt-4">
+<button class="flex-1 py-3 text-sm font-semibold border-b-2 border-primary text-primary">All</button>
+<button class="flex-1 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Unread</button>
+<button class="flex-1 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Archived</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+<!-- Groups Section -->
+<section>
+<div class="flex items-center justify-between mb-3">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500">Groups</h2>
+<button class="text-xs font-semibold text-primary">View All</button>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<!-- Cardiology Study Group -->
+<div class="group relative flex items-center gap-4 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all cursor-pointer shadow-sm">
+<div class="relative w-14 h-14 shrink-0 rounded-lg bg-primary/20 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-80" data-alt="Microscopic view of heart cells pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8XGunJPiu0QwBCID3z2Flq_cM7aejnu0wk22dYtzJFGyWjRDZeQ4Xeh9fe1zvlP1MXF64B3bVeQBxWX9COywGnJbjyWRpHm5nNUEhkHuQgJ72V7Y9jxQuFgrijinIaZp0fpLbyB-bFrd5wF90NwzbKKu_88KMZQEGw2oTZLx-zbBgezDJNrQgEiXkhroOsB69jIrk3ccDf95cNE_Nlh0fiLvAFpdnqYXm3lBx3rMd6LYyKFcyqeOAXsG8R_nHwbYHxXk66nPxxD4"/>
+<div class="absolute inset-0 bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white">favorite</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-slate-900 dark:text-slate-100 truncate">Cardiology Study Group</h3>
+<span class="text-[10px] font-medium text-slate-400">10:45 AM</span>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 truncate">Dr. Smith: Check the new EKG analysis...</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="inline-block w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-[11px] text-slate-500">12 members online</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+</div>
+</div>
+<!-- Clinical Case Discussion -->
+<div class="group relative flex items-center gap-4 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/50 transition-all cursor-pointer shadow-sm">
+<div class="relative w-14 h-14 shrink-0 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-80" data-alt="Stethoscope and medical chart blurred background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHAYrRYb9n-dqt9B21Uci_FPpjf0A6boEqXXbXrfo0PP1-o7DkInE6zpuzsi_PZRhuGkZeJac93wv64mvw6S9Nrx8Q_rexcGCZzuQKltPl_3CzPJvBzcoERqbMCNbVWD5TR5V440ul4oIHSQnmNwrhVTLEZhM6os9ggJXDMp4qkCgWbY1bedmsJuiINLCQ09GdKZfLKAnml0szjI3f7DxNScht48SWOpfbDjC401vN0gedT5WX2P0Hlvy9jNUrlqh3Nn5i-7IKHEA"/>
+<div class="absolute inset-0 bg-slate-900/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white">clinical_notes</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-slate-900 dark:text-slate-100 truncate">Clinical Case Discussion #402</h3>
+<span class="text-[10px] font-medium text-slate-400">Yesterday</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">Sarah: The patient's lab results are in...</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Direct Messages Section -->
+<section>
+<div class="flex items-center justify-between mb-3">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500">Direct Messages</h2>
+<button class="text-xs font-semibold text-primary">New Chat</button>
+</div>
+<div class="space-y-1">
+<!-- User 1 -->
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer">
+<div class="relative w-12 h-12 shrink-0">
+<img class="w-full h-full rounded-full object-cover" data-alt="Professional portrait of a male doctor in lab coat" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGNjJ7WwaKmjdfmn3ytUdnv_-dn84aLck-tAONI2aGfr6Dl3IJKMN9kgDo0NaQ5MZIAaAVX_nrL9yrSwZYOO1oNJBbdBCWN8vpnp5CR8Xw4um_na-cpyRXLLhFes8ENfbfVut73-nFrou2awVItwSuVqrNAbd2DyquJtLdZ9c5JzfIhtiAG1RHwBRLtlxgoE4c5A9AnPnOlsah465nNt2G0fj6v2gfttOxETlhdR_niS4ZZPJPnLs_T6iI4lD5Iph8sVSN2coMMT0"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-background-dark rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<h3 class="font-semibold text-slate-900 dark:text-slate-100">Dr. Julian Vance</h3>
+<span class="text-[10px] text-slate-400">2 min ago</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">Did you review the radiology report?</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<!-- User 2 -->
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer">
+<div class="relative w-12 h-12 shrink-0">
+<img class="w-full h-full rounded-full object-cover" data-alt="Professional portrait of a female medical researcher" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDESpnVRtSkxk1Jz7No8Qx-aYrKIWtpTalBYSSXIxy2nGJqldvVfp4RfdE193ZDhULPxERTLzlHak6NILUg2zDcDRCKHtc8i2I_UPggw-tE5BPm07HdnX4VU8z2ar8q6pNGUp-wlW-VwyOo5FET_UuCq1ciBwoUBDtA8sOcsUByuBuccVJOJa_ukH__jyl6YU2Z-hBasPm3O-s8u9IgLTnbd0XzIwxKn0j1JQev434xtzGn6VLPZgCFu0YpdsY0DzJVh1iKRI-yZVE"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-slate-300 border-2 border-white dark:border-background-dark rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<h3 class="font-semibold text-slate-900 dark:text-slate-100">Dr. Elena Rodriguez</h3>
+<span class="text-[10px] text-slate-400">1h ago</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate text-primary font-medium">Shared a document: neuro_pathology.pdf</p>
+</div>
+</div>
+<!-- User 3 -->
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer">
+<div class="relative w-12 h-12 shrink-0">
+<img class="w-full h-full rounded-full object-cover" data-alt="Portrait of a young male medical student" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGu60_ygtSMT-gkcKGv3hZEdPh2i2ky4h_Qyf5IxdQPUGbW8w9294qSqDHdlvOaIrVwCqYYIoxfKaWFal-zeiWa3oKASnmK-iIOSkKzisTYdmeBlHgxEUM4cq_SCicEdfUqzftMJQtAj1hVTEnzqMaOHMyZNcMU0MghlenpXGsDSTPmj5eP4QombMw43WyIiHYLYIYuaFL3ulhkdAJxmeWg_n4idjb7rJ7zp8Zvx8fg9_ic0G930H9q5_tlonVeGCIlTFJptWUkC8"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-background-dark rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<h3 class="font-semibold text-slate-900 dark:text-slate-100">Kevin Lee (Med Student)</h3>
+<span class="text-[10px] text-slate-400">3h ago</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">Thanks for the study tips!</p>
+</div>
+</div>
+<!-- User 4 -->
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer opacity-80">
+<div class="relative w-12 h-12 shrink-0">
+<div class="w-full h-full rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">MS</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<h3 class="font-semibold text-slate-900 dark:text-slate-100">Marcus Sterling</h3>
+<span class="text-[10px] text-slate-400">Yesterday</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate">The seminar starts at 9...</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="sticky bottom-0 bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 px-4 pb-6 pt-2">
+<div class="flex justify-around items-center">
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="w-10 h-8 flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">home</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 group-hover:text-primary">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="w-10 h-8 flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">book_4</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 group-hover:text-primary">Study</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="w-10 h-8 flex items-center justify-center text-primary transition-colors">
+<span class="material-symbols-outlined fill-1">chat</span>
+</div>
+<span class="text-[10px] font-bold text-primary">Messages</span>
+</a>
+<a class="flex flex-col items-center gap-1 group" href="#">
+<div class="w-10 h-8 flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">person</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 group-hover:text-primary">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

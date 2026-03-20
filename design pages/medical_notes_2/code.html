@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#137fec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              "display": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<title>Study Medical - Medical Notes</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 transition-colors duration-200">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<header class="sticky top-0 z-10 flex items-center bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 p-4 justify-between">
+<div class="flex items-center gap-3">
+<div class="text-primary flex size-10 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<h1 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">Medical Notes</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">auto_fix_high</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden border border-slate-300 dark:border-slate-600">
+<img class="w-full h-full object-cover" data-alt="Professional medical doctor profile portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8meUvX1CqsE5uTusFeFrKm9Jx6iEb21ZZmiYHsjidehSCRsM9Uo70-UpcSPnT7-Hnv-MoxNGL8J1mcR73u2xZq4sKUH4NziWDWKEuRzXbAS-W6dqyYXFTAbOJQzg_3hoA0g66mp5h_KyF4cIj09uDb72wl9yyLvJEsDKyBitP5tCjfazdQw-iKOTk8fed9RYJwhMZ44Zq4oKs7XcuROoctshwcWbFOTApwtEPZhNZT10gTDdNeLDPAywnaeAZGdy2uoVkRn1Xdjs"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col">
+<div class="px-4 py-4">
+<label class="flex flex-col w-full">
+<div class="flex w-full items-stretch rounded-xl h-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="text-slate-400 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full border-none bg-transparent focus:ring-0 px-3 text-base placeholder:text-slate-400" placeholder="Search pathology, anatomy, or clinical notes..." type="text"/>
+</div>
+</label>
+</div>
+<div class="px-4 mb-4">
+<div class="flex border-b border-slate-200 dark:border-slate-800 gap-6">
+<button class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 px-1 text-sm font-semibold">
+                        All Notes
+                    </button>
+<button class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 px-1 text-sm font-medium hover:text-primary transition-colors">
+                        Recent
+                    </button>
+<button class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 px-1 text-sm font-medium hover:text-primary transition-colors">
+                        Pinned
+                    </button>
+</div>
+</div>
+<div class="flex-1 px-4 space-y-3 pb-24">
+<div class="group flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0 size-12">
+<span class="material-symbols-outlined">cardiology</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-semibold truncate">Cardiology - Valvular Diseases</h3>
+<span class="text-slate-400 text-xs font-medium shrink-0">Oct 24</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-1 mt-0.5">Comprehensive guide on mitral regurgitation, aortic stenosis clinical signs and management.</p>
+</div>
+</div>
+<div class="group flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center justify-center rounded-lg bg-orange-100 text-orange-600 shrink-0 size-12">
+<span class="material-symbols-outlined">neurology</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-semibold truncate">Neurological Examination Basics</h3>
+<span class="text-slate-400 text-xs font-medium shrink-0">Oct 22</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-1 mt-0.5">Cranial nerve testing, motor reflexes, and sensory distribution patterns for quick review.</p>
+</div>
+</div>
+<div class="group flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center justify-center rounded-lg bg-green-100 text-green-600 shrink-0 size-12">
+<span class="material-symbols-outlined">medication</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-semibold truncate">Pharmacology - Antibiotics</h3>
+<span class="text-slate-400 text-xs font-medium shrink-0">Oct 20</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-1 mt-0.5">Mechanism of action for Cephalosporins and Penicillins with resistance profiles.</p>
+</div>
+</div>
+<div class="group flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/50 transition-all cursor-pointer opacity-80">
+<div class="flex items-center justify-center rounded-lg bg-purple-100 text-purple-600 shrink-0 size-12">
+<span class="material-symbols-outlined">radiology</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-semibold truncate">Radiology Interpretation: Chest X-Ray</h3>
+<span class="text-slate-400 text-xs font-medium shrink-0">Oct 18</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-1 mt-0.5">ABCDE approach to reading chest radiographs with common pathology examples.</p>
+</div>
+</div>
+<div class="group flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/50 transition-all cursor-pointer opacity-80">
+<div class="flex items-center justify-center rounded-lg bg-red-100 text-red-600 shrink-0 size-12">
+<span class="material-symbols-outlined">emergency</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h3 class="text-slate-900 dark:text-slate-100 text-base font-semibold truncate">Emergency Medicine Triage</h3>
+<span class="text-slate-400 text-xs font-medium shrink-0">Oct 15</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-1 mt-0.5">Priority scoring and immediate management protocols for acute trauma cases.</p>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-24 right-6 flex flex-col gap-4">
+<button class="flex items-center justify-center size-14 rounded-full bg-white dark:bg-slate-800 text-primary shadow-xl border border-primary/20 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-3xl font-bold">psychology</span>
+</button>
+<button class="flex items-center justify-center size-16 rounded-full bg-primary text-white shadow-xl hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-3xl font-bold">add</span>
+</button>
+</div>
+<nav class="fixed bottom-0 w-full flex bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 pb-6 pt-3 z-20">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-semibold uppercase tracking-wider">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+<p class="text-[10px] font-semibold uppercase tracking-wider">Notes</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">school</span>
+<p class="text-[10px] font-semibold uppercase tracking-wider">Flashcards</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">person</span>
+<p class="text-[10px] font-semibold uppercase tracking-wider">Profile</p>
+</a>
+</nav>
+</div>
+</body></html>

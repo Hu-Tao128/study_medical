@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Study Medical - 3D Anatomy Gallery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#137fec",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101922",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between px-4 py-4 max-w-5xl mx-auto w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">view_in_ar</span>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Study Medical</h1>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden border-2 border-primary">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="Portrait of a medical professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW-0zbXynJo2-ITfq0n0uJ8-V_cFaPyOl_1TYZhzZTH8A5ETArp1AShk03RStLHeA5jYEJZp5tcgTlVILeEDGtPMabBiQADvSuJroStEAZivFHH2jLxH4EOzmlslFGYquqhsTnYYGoELD-cHHl8JVJYv2nrSzPcpXzQSFj5o2XYtoEPJa0YISrVJRf74DgrcG-Wdjk1p07io0WkuL5j_er4yBjOxfx3JrnkH_6VtO2PARTZoR8DLRzvry3ejQy0BVeitu2X4Pwx5U"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-5xl mx-auto w-full px-4 py-6 pb-24">
+<!-- Search Section -->
+<div class="mb-8">
+<h2 class="text-2xl font-bold mb-4">Explore 3D Anatomy</h2>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="block w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all text-base shadow-sm" placeholder="Search for bones, muscles, or organs..." type="text"/>
+</div>
+</div>
+<!-- Categories Chips -->
+<div class="flex gap-3 overflow-x-auto pb-4 no-scrollbar">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white font-medium whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">grid_view</span> All
+            </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-primary transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">skull</span> Skeletal
+            </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-primary transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">exercise</span> Muscular
+            </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-primary transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">favorite</span> Cardiovascular
+            </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-primary transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">psychology</span> Nervous
+            </button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-primary transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">air</span> Respiratory
+            </button>
+</div>
+<!-- Models Grid -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Featured Card 1 -->
+<div class="group relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+<img alt="The Human Skull" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="3D model rendering of a human skull with labels" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1Ns1aRAmlC0xkRdjrdddl_ul_7gWSJdS1dbWGz3BIt9KWq2pJMfC6uCtF85WKXpcFyDzVU3cxpNuXUKA3p_ansN02AX-38n5gXNyd2paLcz6oPJY7UZZ_UNFjia_vn94BaHbvhCAy55h9gjkRubX4txdqACH9wFyKLx3u2dMf-D_FZ9Kg2o5MdZuDlrMUwICc4bFFpxjQlq7ynfC93ch0H7XVK5N9pB32s84knsuuA-BiXIunzg2_3zhR1wlVASzwJfswqFKiQw8"/>
+<div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">3d_rotation</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold group-hover:text-primary transition-colors">The Human Skull</h3>
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded uppercase tracking-wider">High-Res</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Detailed 4K scan of the cranial structure including mandible and inner ear ossicles.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">visibility</span>
+<span class="text-xs text-slate-500 font-medium">12.4k views</span>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors flex items-center gap-2">
+                            View Model <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Featured Card 2 -->
+<div class="group relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+<img alt="Respiratory System" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Detailed 3D diagram of human lungs and bronchi" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr8kbn1fTyMweW3nVNyS6c_FO2Y_Tg6CIc8oshDKbmD1BCHQUw8Mfo7-N_UOc5pzvLAlnOaN0Rbq9_GJKXnNJBr3xRmd7Lbb-d0HcMuLOyBAKo27ZGmRz53TSSeVB8zIYF89_C_scw1aMNt0ZwxXkBexHpjZML_X3b7VHMQUX9eXMk7sqer0aiqMvW8BljzwC4wSWsXDWxltXso5zebKjRz5-LflfhMcmTVaxx1_lekiZEThRxGwzSmPYsed99VKbNy4-cWaroo0U"/>
+<div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">3d_rotation</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold group-hover:text-primary transition-colors">Respiratory System</h3>
+<span class="px-2 py-1 bg-green-500/10 text-green-600 text-xs font-bold rounded uppercase tracking-wider">Animated</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Interactive cross-section of the thoracic cavity showing lung expansion and alveolar exchange.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">visibility</span>
+<span class="text-xs text-slate-500 font-medium">8.9k views</span>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors flex items-center gap-2">
+                            View Model <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Additional Item 1 -->
+<div class="group relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+<img alt="Heart Anatomy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Anatomical 3D model of a human heart" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMNsDFsLBksPLYJEwGzcCynm2u09iYZVKb2PO7t1g59aop7GCHafVh8hQffwCoWcJKa49Z1vxgIj_MQDp4IETj7i246EubYIlX8DMl9LnvW9a9YSk5t5eyFdVoEICgdZ8nfX0CizTooXxoBOLbVlD7EN12gwi1cyNVx4SBzrS_2CG03a1E2yfaZOHHipsIA8gHb1FxeQS4w2gb3T-oPt4lkWP-_7P53V8QoGy4qhFbVGaXa991xlK3dog8Iu_u-WqdFzPSFdQ5kEI"/>
+<div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">3d_rotation</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold group-hover:text-primary transition-colors">Heart Structure</h3>
+<span class="px-2 py-1 bg-red-500/10 text-red-600 text-xs font-bold rounded uppercase tracking-wider">Interactive</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Explore the four chambers, valves, and major blood vessels in real-time 3D simulation.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">visibility</span>
+<span class="text-xs text-slate-500 font-medium">15.2k views</span>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors flex items-center gap-2">
+                            View Model <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Additional Item 2 -->
+<div class="group relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300">
+<div class="aspect-video relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+<img alt="Neural Networks" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="3D visualization of human brain and neural network" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBWCBsMpm0JiIjLDdNjO4lTEPcYTqGCZYdL_ciwikLPEK8p-qg89wWyolSXbFH4FS-FgdJ7QTAnhPMH63mucp1ayZ8_kMqSHJFW8Dsc1UwdA711SUoogOwX-ZKawvALyvjhjXb9UPc7HLxEUbIo8suHhew59eTwTL1gc8y4uZLTYoO9sXieiwaW9I5I6bVMdt4-JZyqzLo3tOsD5y4QU3RQGq7pgXhNnYgPZItCqNuKTVFUCtGfc6pDRogmqdKlR5DGdUAKkCQb2o"/>
+<div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">3d_rotation</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold group-hover:text-primary transition-colors">Neural Pathways</h3>
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded uppercase tracking-wider">Premium</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Complex map of the central nervous system showing major nerve trunks and pathways.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm">visibility</span>
+<span class="text-xs text-slate-500 font-medium">6.7k views</span>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors flex items-center gap-2">
+                            View Model <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-background-dark/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 pb-safe">
+<div class="max-w-5xl mx-auto flex justify-around items-center px-4 py-3">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined font-variation-settings-fill-1">view_in_ar</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Gallery</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Library</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Saved</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Profile</span>
+</a>
+</div>
+</nav>
+<!-- CSS Overlay for hidden scrollbars -->
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+</body></html>

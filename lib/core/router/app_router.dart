@@ -4,15 +4,18 @@ import '../../features/auth/presentation/register_page.dart';
 import '../../features/auth/data/auth_service.dart';
 import '../../features/home/presentation/main_shell.dart';
 import '../../features/home/presentation/home_page.dart';
-import '../../features/flashcard/presentation/flashcard_page.dart';
-import '../../features/flashcard/domain/flashcard_entity.dart';
-import '../../features/cases/presentation/cases_page.dart';
-import '../../features/quizzes/presentation/quizzes_page.dart';
+import '../../features/home/presentation/model_3d_page.dart';
+import '../../features/study/presentation/study_page.dart';
+import '../../features/flashcard/presentation/flashcard_session_page.dart';
+import '../../features/flashcard/presentation/flashcard_result_page.dart';
+import '../../features/notes/presentation/medical_notes_page.dart';
+import '../../features/notes/presentation/note_editor_page.dart';
+import '../../features/profile/presentation/profile_page.dart';
+import '../../features/ai_assistant/presentation/ai_chat_page.dart';
+import '../../features/ai_assistant/presentation/ai_quiz_page.dart';
+import '../../features/ai_assistant/presentation/ai_explain_page.dart';
+import '../../features/ai_assistant/presentation/ai_summarize_page.dart';
 import '../../features/settings/presentation/settings_page.dart';
-
-// No local navigator keys here if we pass them or use contextless navigation cautiously,
-// but GoRouter usually needs them or handles them. We'll reuse the globals logic if needed,
-// but for cleaner arch, let's keep it simple.
 
 GoRouter appRouter(AuthService authService) {
   return GoRouter(
@@ -39,6 +42,57 @@ GoRouter appRouter(AuthService authService) {
         path: '/register',
         builder: (context, state) => const RegisterPage(),
       ),
+      GoRoute(
+        path: '/model3d',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, String>?;
+          return Model3DPage(
+            modelName: extra?['name'] ?? 'Modelo 3D',
+            modelUrl: extra?['url'] ?? '',
+          );
+        },
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsPage(),
+      ),
+      GoRoute(
+        path: '/study/flashcards/session',
+        builder: (context, state) => const FlashcardSessionPage(),
+      ),
+      GoRoute(
+        path: '/study/flashcards/result',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return FlashcardResultPage(
+            correct: extra?['correct'] ?? 0,
+            total: extra?['total'] ?? 0,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/notes/new',
+        builder: (context, state) => const NoteEditorPage(),
+      ),
+      GoRoute(
+        path: '/notes/:id',
+        builder: (context, state) {
+          final noteId = state.pathParameters['id']!;
+          return NoteEditorPage(noteId: noteId);
+        },
+      ),
+      GoRoute(
+        path: '/ai/quiz',
+        builder: (context, state) => const AIQuizPage(),
+      ),
+      GoRoute(
+        path: '/ai/explain',
+        builder: (context, state) => const AIExplainPage(),
+      ),
+      GoRoute(
+        path: '/ai/summarize',
+        builder: (context, state) => const AISummarizePage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainShell(navigationShell: navigationShell);
@@ -55,39 +109,32 @@ GoRouter appRouter(AuthService authService) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/flashcards',
-                builder: (context, state) => FlashcardPage(
-                  // Temporary dummy data for the tab view
-                  flashcard: FlashcardEntity(
-                    id: 'tab',
-                    question: 'Select a deck to start',
-                    answer: '...',
-                  ),
-                ),
+                path: '/study',
+                builder: (context, state) => const StudyPage(),
               ),
             ],
           ),
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/quizzes',
-                builder: (context, state) => const QuizzesPage(),
+                path: '/library',
+                builder: (context, state) => const MedicalNotesPage(),
               ),
             ],
           ),
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/cases',
-                builder: (context, state) => const CasesPage(),
+                path: '/ai',
+                builder: (context, state) => const AIChatPage(),
               ),
             ],
           ),
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/settings',
-                builder: (context, state) => const SettingsPage(),
+                path: '/profile',
+                builder: (context, state) => const ProfilePage(),
               ),
             ],
           ),

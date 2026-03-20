@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Clinical Case Study</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex min-h-screen w-full flex-col max-w-2xl mx-auto bg-white dark:bg-slate-900 shadow-xl overflow-x-hidden">
+<!-- Header -->
+<div class="flex items-center px-4 py-4 justify-between border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<button class="text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Clinical Case Study</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">bookmark</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+<!-- Hero Section -->
+<div class="@container">
+<div class="p-4">
+<div class="bg-cover bg-center flex flex-col justify-end overflow-hidden rounded-xl min-h-[240px] relative group" data-alt="Microscopic view of cellular structure or medical imaging scan" style='background-image: linear-gradient(0deg, rgba(16, 25, 34, 0.9) 0%, rgba(16, 25, 34, 0.2) 60%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDpGWSUyPIEzL5RYiMiD1KCgsNKhdtsMRcl0nYZX7NP0kl3vAbh0g_zEz54zcaiIIHqa3iEUNXEulGtMHXf_9jv8jzP9ivj7LEcXkdKtS5ynZg9LZXRgjAcVLR0XLhEqTCdr2JvWnurkEjKZw69_ZWTqMJ6WN1fYSjqbl44nWyby40luh6qypOftnrIMVuDxJU-iT4NpUoEmTfJ5V5KPkVQLjU42ZwQSO5-aH2FuPVNSjgDudxn4wWznI9cN9rD4ZZ2rreKTMhX6u8");'>
+<div class="p-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-primary px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-wider">Urgent</span>
+<span class="text-slate-300 text-sm font-medium">Case #402-B</span>
+</div>
+<h1 class="text-white text-2xl font-bold leading-tight">Acute Abdominal Pain: Differential Diagnosis</h1>
+<p class="text-slate-300 text-sm mt-1">Updated 2 hours ago • Surgery Dept.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="flex px-4 gap-6 overflow-x-auto no-scrollbar">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary pb-3 pt-4 whitespace-nowrap" href="#">
+<p class="text-sm font-bold">Case Detail</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 whitespace-nowrap hover:text-primary transition-colors" href="#">
+<p class="text-sm font-bold">Diagnostics</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 whitespace-nowrap hover:text-primary transition-colors" href="#">
+<p class="text-sm font-bold">Lab Results</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 whitespace-nowrap hover:text-primary transition-colors" href="#">
+<p class="text-sm font-bold">Resources</p>
+</a>
+</div>
+</div>
+<!-- Content Area -->
+<div class="flex-1 overflow-y-auto pb-24">
+<!-- Patient Profile Summary -->
+<div class="p-4 grid grid-cols-3 gap-4 border-b border-slate-100 dark:border-slate-800">
+<div class="flex flex-col">
+<span class="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Age / Sex</span>
+<span class="text-sm font-medium">45 Yrs / Male</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Weight</span>
+<span class="text-sm font-medium">82 kg (BMI 26.8)</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Admission</span>
+<span class="text-sm font-medium">ER - 04:30 AM</span>
+</div>
+</div>
+<!-- Patient History Section -->
+<section class="p-4">
+<h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history_edu</span>
+                    Patient History
+                </h3>
+<div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+<p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                        Patient presents with a 12-hour history of progressive, poorly localized periumbilical pain that has since shifted to the right lower quadrant. Reported nausea and two episodes of non-bilious emesis.
+                    </p>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full border border-primary/20">HTN</span>
+<span class="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full border border-primary/20">Type 2 Diabetes</span>
+<span class="px-3 py-1 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold rounded-full">Smoker (Current)</span>
+</div>
+</div>
+</section>
+<!-- Symptoms Checklist -->
+<section class="p-4">
+<h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">clinical_notes</span>
+                    Clinical Presentation
+                </h3>
+<div class="grid grid-cols-1 gap-3">
+<div class="flex items-start gap-3 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-800 shadow-sm">
+<span class="material-symbols-outlined text-red-500">check_circle</span>
+<div>
+<p class="font-bold text-sm">McBurney's Point Tenderness</p>
+<p class="text-xs text-slate-500">Exquisite tenderness on deep palpation.</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-800 shadow-sm">
+<span class="material-symbols-outlined text-red-500">check_circle</span>
+<div>
+<p class="font-bold text-sm">Rovsing Sign</p>
+<p class="text-xs text-slate-500">Positive; pain in RLQ when LLQ is palpated.</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-800 shadow-sm opacity-60">
+<span class="material-symbols-outlined text-slate-300">radio_button_unchecked</span>
+<div>
+<p class="font-bold text-sm">Psoas Sign</p>
+<p class="text-xs text-slate-500">Negative upon extension of right hip.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Diagnostic Guide -->
+<section class="p-4">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_tree</span>
+                    Diagnostic Step-by-Step
+                </h3>
+<div class="space-y-4">
+<!-- Step 1 (Completed) -->
+<div class="relative flex gap-4">
+<div class="flex flex-col items-center">
+<div class="size-8 rounded-full bg-green-500 text-white flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<div class="w-0.5 h-full bg-green-500"></div>
+</div>
+<div class="pb-6">
+<p class="text-xs font-bold text-green-600 uppercase">Step 1: Physical Examination</p>
+<p class="text-sm font-medium mt-1">Detailed abdominal assessment completed. Localized guarding present.</p>
+</div>
+</div>
+<!-- Step 2 (Active) -->
+<div class="relative flex gap-4">
+<div class="flex flex-col items-center">
+<div class="size-8 rounded-full bg-primary text-white flex items-center justify-center z-10 ring-4 ring-primary/20">
+<span class="text-sm font-bold">2</span>
+</div>
+<div class="w-0.5 h-full bg-slate-200 dark:bg-slate-700"></div>
+</div>
+<div class="pb-6">
+<p class="text-xs font-bold text-primary uppercase">Step 2: Imaging Request</p>
+<p class="text-sm font-bold mt-1">Evaluate via CT Scan with IV Contrast</p>
+<div class="mt-3 flex gap-2">
+<button class="bg-primary text-white text-xs font-bold py-2 px-4 rounded-lg">View Scan Results</button>
+<button class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold py-2 px-4 rounded-lg">Add Note</button>
+</div>
+</div>
+</div>
+<!-- Step 3 (Upcoming) -->
+<div class="relative flex gap-4">
+<div class="flex flex-col items-center">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-400 flex items-center justify-center z-10">
+<span class="text-sm font-bold">3</span>
+</div>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-400 uppercase">Step 3: Surgical Consultation</p>
+<p class="text-sm font-medium text-slate-400 mt-1">Pending diagnostic confirmation.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Imaging Placeholder Grid -->
+<section class="p-4">
+<h3 class="text-lg font-bold mb-3">Supporting Media</h3>
+<div class="grid grid-cols-2 gap-3">
+<div class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden relative group border border-slate-200 dark:border-slate-700">
+<img class="w-full h-full object-cover" data-alt="Black and white CT scan image of a human torso" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANiNiM2C8iXPenKTQP3ZImuwShEg4GSvLavCUvfEoC88NyYRApbp74q3hvAYlRY68Kq17oG0KoFJCqSxKwhl8rHZz4qSdtDu57h_i_jKuLkgU161EBHE1EtE9MI5etNhVoxTjDbW2KWob5xJIwPUE9aKudKJwiZTgIjWzNSn65hJeneUQvhRvecIlqB999wZM09S0CaQSvO99lnmcyx31E6YyQNUT6EnsMPidPIKo-k3LR8NGvw6Obj2MBDNW2kN_kYWd9LqURRFY"/>
+<div class="absolute bottom-2 left-2 bg-black/60 px-2 py-1 rounded text-[10px] text-white">Axial CT Scan</div>
+</div>
+<div class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden relative group border border-slate-200 dark:border-slate-700">
+<img class="w-full h-full object-cover" data-alt="Microscopic slide view of tissue pathology" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBb0VyQr6wC653cwG8-F16VrI-og7f7Jq0IVg-c2Yhcuz3-wCmbBDsAmNXraa7g0yteXrX6S8e-2LVnk-VUAbVELdNPWOF61tU62IZjaIODSzEEvvKezRxkHxbtii5w0LYcWZNR00Ery2RWiY8-4p2LcCuQ9x7lmcsvzojxiDFnvC6EOWLM3PVsIyiLG7_hypXoYjv-RCVnbWBzByRywc4yq7ooZ7ep46Z3BMxVEVfUbulYVyhQpWdPkestVEbrCzt9ZDKOo5CmHs"/>
+<div class="absolute bottom-2 left-2 bg-black/60 px-2 py-1 rounded text-[10px] text-white">Pathology</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-2xl bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 pb-4 pt-2 flex justify-around items-center z-50">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-[10px] font-bold">Library</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined font-fill">folder</span>
+<span class="text-[10px] font-bold">Cases</span>
+</a>
+<div class="relative -top-8">
+<button class="bg-primary size-14 rounded-full shadow-lg shadow-primary/40 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-bold">Search</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined text-slate-400">account_circle</span>
+<span class="text-[10px] font-bold">Profile</span>
+</a>
+</div>
+</div>
+</body></html>

@@ -1,111 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import '../../auth/data/auth_service.dart';
+import 'widgets/login_form.dart';
+import 'widgets/social_login_buttons.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isLoading = false;
-
-  Future<void> _login() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter email and password')),
-      );
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      await context.read<AuthService>().signIn(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
-      // Navigation is handled by the Router listening to Auth State
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${e.toString()}')),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Password'),
-            ),
-            const SizedBox(height: 24),
-            if (_isLoading)
-              const CircularProgressIndicator()
-            else
-              ElevatedButton(onPressed: _login, child: const Text('Sign In')),
-            const SizedBox(height: 16),
-            OutlinedButton.icon(
-              icon: const Icon(Icons.login),
-              label: const Text('Sign in with Google'),
-              onPressed: () async {
-                setState(() {
-                  _isLoading = true;
-                });
-                try {
-                  await context.read<AuthService>().signInWithGoogle();
-                } catch (e) {
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Google Sign-In failed: ${e.toString()}'),
-                      ),
-                    );
-                  }
-                } finally {
-                  if (mounted) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  }
-                }
-              },
-            ),
-            const SizedBox(height: 16),
-            TextButton(
-              onPressed: () => context.go('/register'),
-              child: const Text('Don\'t have an account? Register'),
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 40),
+              Icon(
+                Icons.medical_services,
+                size: 80,
+                color: colorScheme.primary,
+              ),
+              const SizedBox(height: 40),
+              const LoginForm(),
+              const SizedBox(height: 24),
+              const Divider(),
+              const SizedBox(height: 24),
+              const SocialLoginButtons(),
+              const SizedBox(height: 32),
+              TextButton(
+                onPressed: () => context.go('/register'),
+                child: Text(
+                  "Don't have an account? Register",
+                  style: TextStyle(color: colorScheme.primary),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

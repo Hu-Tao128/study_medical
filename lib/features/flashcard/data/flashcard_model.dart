@@ -1,10 +1,22 @@
-import '../domain/flashcard_entity.dart';
+import 'package:hive/hive.dart';
 
-class FlashcardModel extends FlashcardEntity {
+part 'flashcard_model.g.dart';
+
+@HiveType(typeId: 0)
+class FlashcardModel {
+  @HiveField(0)
+  final String id;
+
+  @HiveField(1)
+  final String question;
+
+  @HiveField(2)
+  final String answer;
+
   FlashcardModel({
-    required super.id,
-    required super.question,
-    required super.answer,
+    required this.id,
+    required this.question,
+    required this.answer,
   });
 
   factory FlashcardModel.fromJson(Map<String, dynamic> json) {
