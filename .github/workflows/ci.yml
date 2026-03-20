@@ -1,0 +1,226 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  flutter-analyze:
+    name: Flutter Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          cache-path: ${{ runner.tool_cache }}/flutter
+
+      - run: flutter pub get
+      - run: flutter analyze --no-fatal-infos
+
+  flutter-test:
+    name: Flutter Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          cache-path: ${{ runner.tool_cache }}/flutter
+
+      - run: flutter pub get
+      - run: flutter test
+
+  build-android-debug:
+    name: Build Android APK (Debug)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          cache-path: ${{ runner.tool_cache }}/flutter
+
+      - name: Create google-services.json for CI
+        run: |
+          mkdir -p android/app/src/debug
+          cat > android/app/src/debug/google-services.json << 'EOF'
+          {
+            "project_info": {
+              "project_number": "000000000000",
+              "project_id": "study-medical-ci",
+              "storage_bucket": "study-medical-ci.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+                  "android_client_info": {
+                    "package_name": "com.example.study_medical"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  {
+                    "current_key": "AIzaSyDEADBEEF000000000000000000000000"
+                  }
+                ],
+                "services": {
+                  "appinvite_service": {
+                    "other_platform_oauth_client": []
+                  }
+                }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+
+      - name: Set local.properties for CI
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" >> android/local.properties
+          echo "flutter.sdk=$FLUTTER_ROOT" >> android/local.properties
+
+      - run: flutter pub get
+      - run: flutter build apk --debug
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+
+  build-android-release:
+    name: Build Android AAB (Release) - Requires Secrets
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    environment: production
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          cache-path: ${{ runner.tool_cache }}/flutter
+
+      - name: Create google-services.json from secrets
+        env:
+          FIREBASE_ANDROID_API_KEY: ${{ secrets.FIREBASE_ANDROID_API_KEY }}
+          FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+          FIREBASE_ANDROID_PROJECT_ID: ${{ secrets.FIREBASE_ANDROID_PROJECT_ID }}
+          FIREBASE_ANDROID_STORAGE_BUCKET: ${{ secrets.FIREBASE_ANDROID_STORAGE_BUCKET }}
+          FIREBASE_PROJECT_NUMBER: ${{ secrets.FIREBASE_PROJECT_NUMBER }}
+        run: |
+          mkdir -p android/app/src/release
+          cat > android/app/src/release/google-services.json << EOF
+          {
+            "project_info": {
+              "project_number": "$FIREBASE_PROJECT_NUMBER",
+              "project_id": "$FIREBASE_ANDROID_PROJECT_ID",
+              "storage_bucket": "$FIREBASE_ANDROID_STORAGE_BUCKET"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "$FIREBASE_ANDROID_APP_ID",
+                  "android_client_info": {
+                    "package_name": "com.example.study_medical"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  {
+                    "current_key": "$FIREBASE_ANDROID_API_KEY"
+                  }
+                ],
+                "services": {
+                  "appinvite_service": {
+                    "other_platform_oauth_client": []
+                  }
+                }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+
+      - name: Set local.properties for CI
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" >> android/local.properties
+          echo "flutter.sdk=$FLUTTER_ROOT" >> android/local.properties
+
+      - run: flutter pub get
+
+      # Pass Firebase credentials via --dart-define (secrets -> build args)
+      - run: |
+          flutter build appbundle --release \
+            --dart-define=FIREBASE_ANDROID_API_KEY=${{ secrets.FIREBASE_ANDROID_API_KEY }} \
+            --dart-define=FIREBASE_ANDROID_APP_ID=${{ secrets.FIREBASE_ANDROID_APP_ID }} \
+            --dart-define=FIREBASE_ANDROID_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_ANDROID_MESSAGING_SENDER_ID }} \
+            --dart-define=FIREBASE_ANDROID_PROJECT_ID=${{ secrets.FIREBASE_ANDROID_PROJECT_ID }} \
+            --dart-define=FIREBASE_ANDROID_STORAGE_BUCKET=${{ secrets.FIREBASE_ANDROID_STORAGE_BUCKET }} \
+            --dart-define=FIREBASE_ANDROID_DATABASE_URL=${{ secrets.FIREBASE_ANDROID_DATABASE_URL }}
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+
+  build-web:
+    name: Build Web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          cache-path: ${{ runner.tool_cache }}/flutter
+
+      - run: flutter pub get
+      - run: flutter build web
+
+      - name: Upload web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: build/web
