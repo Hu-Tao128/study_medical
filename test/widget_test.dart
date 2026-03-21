@@ -20,10 +20,20 @@ class FakeAuthService extends ChangeNotifier implements AuthService {
   bool get isAuthenticated => false;
 
   @override
-  Future<void> signIn(String email, String password) async {}
+  bool get isRateLimited => false;
 
   @override
-  Future<void> signUp(String email, String password) async {}
+  int get failedAttempts => 0;
+
+  @override
+  Future<AuthResult> signIn(String email, String password) async {
+    return const AuthResult(success: false);
+  }
+
+  @override
+  Future<AuthResult> signUp(String email, String password) async {
+    return const AuthResult(success: false);
+  }
 
   @override
   Future<void> signInWithGoogle() async {}

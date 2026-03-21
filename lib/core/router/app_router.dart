@@ -77,7 +77,12 @@ GoRouter appRouter(AuthService authService) {
       GoRoute(
         path: '/notes/:id',
         builder: (context, state) {
-          final noteId = state.pathParameters['id']!;
+          final noteId = state.pathParameters['id'];
+          if (noteId == null ||
+              noteId.isEmpty ||
+              !RegExp(r'^[a-zA-Z0-9_-]+$').hasMatch(noteId)) {
+            return const MedicalNotesPage();
+          }
           return NoteEditorPage(noteId: noteId);
         },
       ),

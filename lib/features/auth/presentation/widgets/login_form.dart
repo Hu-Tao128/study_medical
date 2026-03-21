@@ -33,19 +33,34 @@ class _LoginFormState extends State<LoginForm> {
 
     setState(() => _isLoading = true);
 
-    try {
-      await context.read<AuthService>().signIn(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
+    final authService = context.read<AuthService>();
+    final result = await authService.signIn(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    if (!mounted) return;
+
+    setState(() => _isLoading = false);
+
+    if (!result.success) {
+      final authService = context.read<AuthService>();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(result.errorMessage ?? l10n.loginFailed),
+              if (authService.failedAttempts > 0 && !result.isRateLimited)
+                Text(
+                  '(${AuthService.maxAttempts - authService.failedAttempts} intentos restantes)',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+            ],
+          ),
+        ),
       );
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${l10n.loginFailed}: ${e.toString()}')),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -54,42 +69,65 @@ class _LoginFormState extends State<LoginForm> {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
 
-    return Column(
-      children: [
-        TextField(
-          controller: _emailController,
-          decoration: InputDecoration(
-            labelText: l10n.emailLabel,
-            prefixIcon: Icon(Icons.email, color: colorScheme.primary),
-          ),
-          keyboardType: TextInputType.emailAddress,
-        ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _passwordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: l10n.passwordLabel,
-            prefixIcon: Icon(Icons.lock, color: colorScheme.primary),
-          ),
-        ),
-        const SizedBox(height: 24),
-        if (_isLoading)
-          CircularProgressIndicator(color: colorScheme.primary)
-        else
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _login,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colorScheme.primary,
-                foregroundColor: colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+    return Consumer<AuthService>(
+      builder: (context, authService, child) {
+        final isLocked = authService.isRateLimited;
+
+        return Column(
+          children: [
+            TextField(
+              controller: _emailController,
+              enabled: !_isLoading && !isLocked,
+              decoration: InputDecoration(
+                labelText: l10n.emailLabel,
+                prefixIcon: Icon(Icons.email, color: colorScheme.primary),
               ),
-              child: Text(l10n.signInButton),
+              keyboardType: TextInputType.emailAddress,
             ),
-          ),
-      ],
+            const SizedBox(height: 16),
+            TextField(
+              controller: _passwordController,
+              enabled: !_isLoading && !isLocked,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: l10n.passwordLabel,
+                prefixIcon: Icon(Icons.lock, color: colorScheme.primary),
+              ),
+            ),
+            const SizedBox(height: 24),
+            if (_isLoading || isLocked)
+              Column(
+                children: [
+                  CircularProgressIndicator(color: colorScheme.primary),
+                  if (isLocked)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        'Cuenta bloqueada temporalmente',
+                        style: TextStyle(
+                          color: colorScheme.error,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                ],
+              )
+            else
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _login,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: Text(l10n.signInButton),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }

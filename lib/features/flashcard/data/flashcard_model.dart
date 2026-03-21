@@ -20,11 +20,23 @@ class FlashcardModel {
   });
 
   factory FlashcardModel.fromJson(Map<String, dynamic> json) {
-    return FlashcardModel(
-      id: json['id'],
-      question: json['question'],
-      answer: json['answer'],
-    );
+    final id = json['id'];
+    final question = json['question'];
+    final answer = json['answer'];
+
+    if (id == null || question == null || answer == null) {
+      throw FormatException(
+        'FlashcardModel: campos requeridos faltantes - id: $id, question: $question, answer: $answer',
+      );
+    }
+
+    if (id is! String || question is! String || answer is! String) {
+      throw FormatException(
+        'FlashcardModel: tipos inválidos - id: ${id.runtimeType}, question: ${question.runtimeType}, answer: ${answer.runtimeType}',
+      );
+    }
+
+    return FlashcardModel(id: id, question: question, answer: answer);
   }
 
   Map<String, dynamic> toJson() {

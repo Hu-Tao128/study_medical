@@ -44,21 +44,19 @@ class _RegisterFormState extends State<RegisterForm> {
 
     setState(() => _isLoading = true);
 
-    try {
-      await context.read<AuthService>().signUp(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
+    final result = await context.read<AuthService>().signUp(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    if (!mounted) return;
+
+    setState(() => _isLoading = false);
+
+    if (!result.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result.errorMessage ?? l10n.registrationFailed)),
       );
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${l10n.registrationFailed}: ${e.toString()}'),
-          ),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
     }
   }
 
