@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'app.dart';
 import 'data/theme/local_theme_repository.dart';
 import 'features/auth/data/auth_service.dart';
@@ -17,6 +18,15 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(FlashcardModelAdapter());
   await Hive.openBox('study_cache');
+
+  try {
+    await Supabase.initialize(
+      url: 'https://spxgotrytjkofqinsklw.supabase.co',
+      anonKey: 'sb_publishable_99i1vspo1ocJ5-PLAuMmgg_fRlCFbL1',
+    );
+  } catch (e) {
+    debugPrint("Supabase init failed: $e");
+  }
 
   final themeRepo = LocalThemeRepository();
   final themeProvider = ThemeProvider(themeRepo);
