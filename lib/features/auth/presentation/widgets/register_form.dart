@@ -57,6 +57,15 @@ class _RegisterFormState extends State<RegisterForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(result.errorMessage ?? l10n.registrationFailed)),
       );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Registro exitoso. Revisa tu correo para confirmar tu cuenta.',
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
   }
 

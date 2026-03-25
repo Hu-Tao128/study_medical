@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ import 'package:study_medical/core/theme/color_seed.dart';
 
 class FakeAuthService extends ChangeNotifier implements AuthService {
   @override
-  User? get user => null;
+  AuthUser? get user => null;
 
   @override
   bool get isAuthenticated => false;
@@ -24,6 +24,9 @@ class FakeAuthService extends ChangeNotifier implements AuthService {
 
   @override
   int get failedAttempts => 0;
+
+  @override
+  bool get isInitialized => true;
 
   @override
   Future<AuthResult> signIn(String email, String password) async {
@@ -40,6 +43,9 @@ class FakeAuthService extends ChangeNotifier implements AuthService {
 
   @override
   Future<void> signOut() async {}
+
+  @override
+  Future<String?> getToken() async => null;
 }
 
 class FakeThemeRepository implements ThemeRepository {
