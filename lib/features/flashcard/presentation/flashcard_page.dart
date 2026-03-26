@@ -12,11 +12,22 @@ class FlashcardPage extends StatefulWidget {
 }
 
 class _FlashcardPageState extends State<FlashcardPage> {
+  static const List<Map<String, String>> _topics = [
+    {'id': 'general-anatomy', 'label': 'Anatomía'},
+    {'id': 'cardiology-basic', 'label': 'Cardiología'},
+    {'id': 'neurology-core', 'label': 'Neurología'},
+  ];
+
+  late String _selectedTopicId;
+
   @override
   void initState() {
     super.initState();
+    _selectedTopicId = _topics.first['id']!;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<FlashcardProvider>().loadFlashcards();
+      context.read<FlashcardProvider>().loadFlashcards(
+        topicId: _selectedTopicId,
+      );
     });
   }
 
@@ -29,8 +40,11 @@ class _FlashcardPageState extends State<FlashcardPage> {
       appBar: AppBar(
         title: Text(l10n.flashcardsTitle),
         actions: [
+          _buildTopicDropdown(provider),
           IconButton(
-            onPressed: () => provider.loadFlashcards(),
+            tooltip: l10n.retryButton,
+            onPressed: () =>
+                provider.loadFlashcards(topicId: provider.currentTopicId),
             icon: const Icon(Icons.refresh),
           ),
         ],
@@ -68,6 +82,40 @@ class _FlashcardPageState extends State<FlashcardPage> {
         if (provider.isLoading) const LinearProgressIndicator(),
         Expanded(child: FlashcardListView(flashcards: provider.flashcards)),
       ],
+    );
+  }
+
+  Widget _buildTopicDropdown(FlashcardProvider provider) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: DropdownButtonHideUnderline(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: colorScheme.outline.withValues(alpha: 0.3),
+            ),
+          ),
+          child: DropdownButton<String>(
+            value: _selectedTopicId,
+            icon: const Icon(Icons.arrow_drop_down),
+            items: _topics
+                .map(
+                  (topic) => DropdownMenuItem<String>(
+                    value: topic['id'],
+                    child: Text(topic['label'] ?? ''),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (value == null) return;
+              setState(() => _selectedTopicId = value);
+              provider.loadFlashcards(topicId: value);
+            },
+          ),
+        ),
+      ),
     );
   }
 }

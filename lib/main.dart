@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'app.dart';
 import 'data/theme/local_theme_repository.dart';
+import 'core/network/backend_api.dart';
 import 'features/auth/data/auth_service.dart';
 import 'features/flashcard/data/flashcard_model.dart';
+import 'features/flashcard/data/flashcard_repository.dart';
 import 'features/flashcard/presentation/providers/flashcard_provider.dart';
 import 'features/settings/presentation/providers/theme_provider.dart';
 import 'features/settings/presentation/providers/locale_provider.dart';
@@ -59,7 +61,16 @@ void main() async {
         ChangeNotifierProvider.value(value: themeProvider),
         ChangeNotifierProvider.value(value: localeProvider),
         ChangeNotifierProvider(create: (_) => AuthService()),
-        ChangeNotifierProvider(create: (_) => FlashcardProvider()),
+        Provider<BackendApi>(
+          create: (context) =>
+              BackendApi(authService: context.read<AuthService>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FlashcardProvider(
+            repository: FlashcardRepository(),
+            backendApi: context.read<BackendApi>(),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),

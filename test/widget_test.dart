@@ -111,7 +111,10 @@ class FakeFlashcardProvider extends ChangeNotifier
   String? get error => null;
 
   @override
-  Future<void> loadFlashcards() async {}
+  String get currentTopicId => 'test-topic';
+
+  @override
+  Future<void> loadFlashcards({String? topicId}) async {}
 }
 
 void main() {
