@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 
-import '../../features/auth/data/auth_service.dart';
-
 const String _defaultBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
   defaultValue: 'http://localhost:3000',
@@ -9,10 +7,10 @@ const String _defaultBaseUrl = String.fromEnvironment(
 
 class BackendApiClient {
   BackendApiClient({
-    required AuthService authService,
+    required Future<String?> Function() tokenProvider,
     Dio? dio,
     String? baseUrl,
-  }) : _authService = authService,
+  }) : _tokenProvider = tokenProvider,
        _dio =
            dio ??
            Dio(
@@ -27,7 +25,7 @@ class BackendApiClient {
            );
 
   final Dio _dio;
-  final AuthService _authService;
+  final Future<String?> Function() _tokenProvider;
 
   Future<Response<T>> get<T>(
     String path, {
@@ -94,7 +92,7 @@ class BackendApiClient {
     merged.headers = Map<String, dynamic>.from(merged.headers ?? {});
 
     if (requiresAuth) {
-      final token = await _authService.getToken();
+      final token = await _tokenProvider();
       if (token == null || token.isEmpty) {
         throw const AuthTokenMissingException();
       }

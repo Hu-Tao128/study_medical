@@ -1,4 +1,3 @@
-import '../../features/auth/data/auth_service.dart';
 import '../../features/cases/data/clinical_case_model.dart';
 import '../../features/flashcard/data/flashcard_model.dart';
 import '../../features/groups/data/chat_message_model.dart';
@@ -8,8 +7,8 @@ import '../../features/quizzes/data/quiz_model.dart';
 import 'backend_api_client.dart';
 
 class BackendApi {
-  BackendApi({required AuthService authService})
-    : _client = BackendApiClient(authService: authService);
+  BackendApi({required Future<String?> Function() tokenProvider})
+    : _client = BackendApiClient(tokenProvider: tokenProvider);
 
   final BackendApiClient _client;
 

@@ -3,7 +3,7 @@ import 'dart:developer' as developer;
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:study_medical/core/network/backend_api.dart';
 
 class AuthResult {
   final bool success;
@@ -48,7 +48,7 @@ class AuthLogger {
 }
 
 class AuthService extends ChangeNotifier {
-  final SupabaseClient _supabase = Supabase.instance.client;
+  final BackendApi _backendApi;
   final firebase_auth.FirebaseAuth _firebaseAuth =
       firebase_auth.FirebaseAuth.instance;
 
@@ -68,7 +68,7 @@ class AuthService extends ChangeNotifier {
   int get failedAttempts => _failedAttempts;
   bool get isInitialized => _isInitialized;
 
-  AuthService() {
+  AuthService(this._backendApi) {
     _initAuthListener();
   }
 
@@ -149,7 +149,7 @@ class AuthService extends ChangeNotifier {
 
         AuthLogger.log(event: 'SIGN_IN_SUCCESS', email: email, success: true);
 
-        await _syncWithSupabase();
+        await _syncSessionWithBackend();
 
         notifyListeners();
         return const AuthResult(success: true);
@@ -235,7 +235,7 @@ class AuthService extends ChangeNotifier {
 
         AuthLogger.log(event: 'SIGN_UP_SUCCESS', email: email, success: true);
 
-        await _syncWithSupabase();
+        await _syncSessionWithBackend();
 
         notifyListeners();
         return const AuthResult(success: true);
@@ -272,43 +272,14 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  // Sincroniza con Supabase usando el token de Firebase
-  // Esto crea el usuario en auth.users de Supabase
-  Future<void> _syncWithSupabase() async {
+  Future<void> _syncSessionWithBackend() async {
     try {
-      final firebaseUser = _firebaseAuth.currentUser;
-      if (firebaseUser == null) {
-        developer.log('No hay usuario de Firebase para sync', name: 'AUTH');
-        return;
-      }
-
-      final idToken = await firebaseUser.getIdToken();
-      if (idToken == null) {
-        developer.log('No se pudo obtener el ID token', name: 'AUTH');
-        return;
-      }
-
+      await _backendApi.syncSession();
+    } catch (e, stack) {
       developer.log(
-        'Intentando sincronizar con Supabase (Firebase Third-Party)...',
+        '⚠️ Error al sincronizar sesión backend: $e\n$stack',
         name: 'AUTH',
       );
-
-      // Usar signInWithIdToken con Google provider (para Firebase Third-Party Auth)
-      final response = await _supabase.auth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: idToken,
-      );
-
-      if (response.user != null) {
-        developer.log(
-          '✅ Usuario creado en auth.users: ${response.user!.id}',
-          name: 'AUTH',
-        );
-      } else {
-        developer.log('⚠️ No se pudo crear usuario en Supabase', name: 'AUTH');
-      }
-    } catch (e, stack) {
-      developer.log('⚠️ Error al sync con Supabase: $e\n$stack', name: 'AUTH');
     }
   }
 
@@ -332,7 +303,7 @@ class AuthService extends ChangeNotifier {
       if (result.user != null) {
         _user = AuthUser(id: result.user!.uid, email: result.user!.email ?? '');
 
-        await _syncWithSupabase();
+        await _syncSessionWithBackend();
 
         notifyListeners();
       }
@@ -354,12 +325,6 @@ class AuthService extends ChangeNotifier {
     }
 
     await _firebaseAuth.signOut();
-
-    try {
-      await _supabase.auth.signOut();
-    } catch (e) {
-      developer.log('Supabase signOut error (non-critical): $e', name: 'AUTH');
-    }
 
     _user = null;
     notifyListeners();
