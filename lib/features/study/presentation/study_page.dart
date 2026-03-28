@@ -319,28 +319,13 @@ class _QuizzesSection extends StatelessWidget {
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          _QuizCard(
-            title: 'Cardiology Basics',
-            questions: 15,
-            time: '10 min',
-            difficulty: l10n.easyLabel,
+          _StudyCard(
+            icon: Icons.quiz,
+            title: l10n.quizzesTitle,
+            subtitle: 'Consultar quizzes desde backend por topicId',
+            color: Colors.green,
             colorScheme: colorScheme,
-          ),
-          const SizedBox(height: 8),
-          _QuizCard(
-            title: 'Neurology Fundamentals',
-            questions: 20,
-            time: '15 min',
-            difficulty: l10n.mediumLabel,
-            colorScheme: colorScheme,
-          ),
-          const SizedBox(height: 8),
-          _QuizCard(
-            title: 'Pharmacology Interactions',
-            questions: 25,
-            time: '20 min',
-            difficulty: l10n.hardLabel,
-            colorScheme: colorScheme,
+            onTap: () => context.push('/study/quizzes'),
           ),
         ],
       ),
@@ -369,25 +354,13 @@ class _CasesSection extends StatelessWidget {
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
-          _CaseCard(
-            title: l10n.patientWithChestPain,
-            specialty: l10n.cardiologyLabel,
-            difficulty: l10n.mediumLabel,
+          _StudyCard(
+            icon: Icons.medical_services,
+            title: l10n.casesTitle,
+            subtitle: 'Consultar casos clinicos desde backend por topicId',
+            color: Colors.indigo,
             colorScheme: colorScheme,
-          ),
-          const SizedBox(height: 8),
-          _CaseCard(
-            title: l10n.acuteNeurologicalDeficit,
-            specialty: l10n.neurologyLabel,
-            difficulty: l10n.hardLabel,
-            colorScheme: colorScheme,
-          ),
-          const SizedBox(height: 8),
-          _CaseCard(
-            title: l10n.pediatricRespiratoryDistress,
-            specialty: 'Pediatrics',
-            difficulty: l10n.easyLabel,
-            colorScheme: colorScheme,
+            onTap: () => context.push('/study/cases'),
           ),
         ],
       ),
@@ -531,176 +504,6 @@ class _ProgressCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _QuizCard extends StatelessWidget {
-  final String title;
-  final int questions;
-  final String time;
-  final String difficulty;
-  final ColorScheme colorScheme;
-
-  const _QuizCard({
-    required this.title,
-    required this.questions,
-    required this.time,
-    required this.difficulty,
-    required this.colorScheme,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.2)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: Colors.green.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(Icons.quiz, color: Colors.green),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    _InfoChip(label: l10n.questionsLabel('$questions')),
-                    const SizedBox(width: 8),
-                    _InfoChip(label: time),
-                    const SizedBox(width: 8),
-                    _InfoChip(label: difficulty),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: colorScheme.primary,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Text(
-              l10n.startButton,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: colorScheme.onPrimary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CaseCard extends StatelessWidget {
-  final String title;
-  final String specialty;
-  final String difficulty;
-  final ColorScheme colorScheme;
-
-  const _CaseCard({
-    required this.title,
-    required this.specialty,
-    required this.difficulty,
-    required this.colorScheme,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.2)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: Colors.purple.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(Icons.medical_services, color: Colors.purple),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    _InfoChip(label: specialty),
-                    const SizedBox(width: 8),
-                    _InfoChip(label: difficulty),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Icon(
-            Icons.arrow_forward_ios,
-            size: 16,
-            color: colorScheme.onSurface.withValues(alpha: 0.4),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _InfoChip extends StatelessWidget {
-  final String label;
-
-  const _InfoChip({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: colorScheme.onSurface.withValues(alpha: 0.7),
-        ),
       ),
     );
   }

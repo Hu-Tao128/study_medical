@@ -173,6 +173,48 @@ class BackendApi {
         .toList(growable: false);
   }
 
+  Future<List<NoteModel>> getNotes({String? topicId}) async {
+    final response = await _client.get<List<dynamic>>(
+      '/api/v1/notes',
+      queryParameters: topicId == null ? null : {'topicId': topicId},
+    );
+    final data = response.data;
+    if (data == null) {
+      return const [];
+    }
+    return data
+        .whereType<Map<String, dynamic>>()
+        .map(NoteModel.fromJson)
+        .toList(growable: false);
+  }
+
+  Future<NoteModel> getNoteById(String noteId) async {
+    final response = await _client.get<Map<String, dynamic>>(
+      '/api/v1/notes/$noteId',
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(message: 'Nota no encontrada');
+    }
+    return NoteModel.fromJson(data);
+  }
+
+  Future<NoteModel> patchNote(String noteId, UpdateNoteRequest request) async {
+    final response = await _client.patch<Map<String, dynamic>>(
+      '/api/v1/notes/$noteId',
+      data: request.toJson(),
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(message: 'Nota no actualizada');
+    }
+    return NoteModel.fromJson(data);
+  }
+
+  Future<void> deleteNote(String noteId) async {
+    await _client.delete<void>('/api/v1/notes/$noteId');
+  }
+
   Future<ChatMessageModel> sendChatMessage(
     String roomId,
     ChatMessageRequest request,

@@ -6,9 +6,12 @@ import '../../features/home/presentation/main_shell.dart';
 import '../../features/home/presentation/home_page.dart';
 import '../../features/home/presentation/model_3d_page.dart';
 import '../../features/study/presentation/study_page.dart';
+import '../../features/quizzes/presentation/quizzes_page.dart';
+import '../../features/cases/presentation/cases_page.dart';
 import '../../features/flashcard/presentation/flashcard_session_page.dart';
 import '../../features/flashcard/presentation/flashcard_result_page.dart';
 import '../../features/notes/presentation/medical_notes_page.dart';
+import '../../features/notes/presentation/note_detail_page.dart';
 import '../../features/notes/presentation/note_editor_page.dart';
 import '../../features/profile/presentation/profile_page.dart';
 import '../../features/ai_assistant/presentation/ai_chat_page.dart';
@@ -61,6 +64,14 @@ GoRouter appRouter(AuthService authService) {
         builder: (context, state) => const FlashcardSessionPage(),
       ),
       GoRoute(
+        path: '/study/quizzes',
+        builder: (context, state) => const QuizzesPage(),
+      ),
+      GoRoute(
+        path: '/study/cases',
+        builder: (context, state) => const CasesPage(),
+      ),
+      GoRoute(
         path: '/study/flashcards/result',
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>?;
@@ -81,6 +92,16 @@ GoRouter appRouter(AuthService authService) {
           if (noteId == null ||
               noteId.isEmpty ||
               !RegExp(r'^[a-zA-Z0-9_-]+$').hasMatch(noteId)) {
+            return const MedicalNotesPage();
+          }
+          return NoteDetailPage(noteId: noteId);
+        },
+      ),
+      GoRoute(
+        path: '/notes/:id/edit',
+        builder: (context, state) {
+          final noteId = state.pathParameters['id'];
+          if (noteId == null || noteId.isEmpty) {
             return const MedicalNotesPage();
           }
           return NoteEditorPage(noteId: noteId);

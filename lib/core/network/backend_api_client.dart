@@ -95,6 +95,20 @@ class BackendApiClient {
     }
   }
 
+  Future<Response<T>> delete<T>(
+    String path, {
+    Object? data,
+    bool requiresAuth = true,
+    Options? options,
+  }) async {
+    try {
+      final requestOptions = await _prepareOptions(options, requiresAuth);
+      return await _dio.delete<T>(path, data: data, options: requestOptions);
+    } on DioException catch (error) {
+      throw BackendApiException.fromDio(error);
+    }
+  }
+
   Future<Options> _prepareOptions(Options? options, bool requiresAuth) async {
     final merged = options?.copyWith() ?? Options();
     merged.headers = Map<String, dynamic>.from(merged.headers ?? {});
