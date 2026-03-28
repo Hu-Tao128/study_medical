@@ -30,15 +30,15 @@ void main() async {
   }
 
   final themeRepo = LocalThemeRepository();
-  final themeProvider = ThemeProvider(themeRepo);
-  final localeProvider = LocaleProvider(themeRepo);
-  await themeProvider.init();
-  await localeProvider.init();
-
   final backendApi = BackendApi(
     tokenProvider: () async =>
         await firebase_auth.FirebaseAuth.instance.currentUser?.getIdToken(),
   );
+
+  final themeProvider = ThemeProvider(themeRepo);
+  final localeProvider = LocaleProvider(themeRepo, backendApi);
+  await themeProvider.init();
+  await localeProvider.init();
 
   runApp(
     MultiProvider(
