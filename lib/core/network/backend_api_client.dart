@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 const String _defaultBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'http://localhost:3000',
+  defaultValue: 'http://100.65.88.45:8080',
 );
 
 class BackendApiClient {
@@ -15,7 +15,7 @@ class BackendApiClient {
            dio ??
            Dio(
              BaseOptions(
-               baseUrl: baseUrl ?? _defaultBaseUrl,
+               baseUrl: _normalizeBaseUrl(baseUrl ?? _defaultBaseUrl),
                connectTimeout: const Duration(seconds: 12),
                receiveTimeout: const Duration(seconds: 12),
                sendTimeout: const Duration(seconds: 12),
@@ -26,6 +26,14 @@ class BackendApiClient {
 
   final Dio _dio;
   final Future<String?> Function() _tokenProvider;
+
+  static String _normalizeBaseUrl(String rawBaseUrl) {
+    final trimmed = rawBaseUrl.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      return trimmed;
+    }
+    return 'http://$trimmed';
+  }
 
   Future<Response<T>> get<T>(
     String path, {

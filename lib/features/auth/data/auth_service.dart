@@ -208,6 +208,7 @@ class AuthService extends ChangeNotifier {
 
       return AuthResult(success: false, errorMessage: message);
     } catch (e) {
+      developer.log('Sign in sync/backend error: $e', name: 'AUTH');
       AuthLogger.log(
         event: 'SIGN_IN_ERROR',
         email: email,
@@ -265,6 +266,7 @@ class AuthService extends ChangeNotifier {
 
       return AuthResult(success: false, errorMessage: message);
     } catch (e) {
+      developer.log('Sign up sync/backend error: $e', name: 'AUTH');
       return const AuthResult(
         success: false,
         errorMessage: 'Error de conexión. Intenta de nuevo.',
@@ -275,11 +277,13 @@ class AuthService extends ChangeNotifier {
   Future<void> _syncSessionWithBackend() async {
     try {
       await _backendApi.syncSession();
+      developer.log('✅ Sesion sincronizada con backend', name: 'AUTH');
     } catch (e, stack) {
       developer.log(
         '⚠️ Error al sincronizar sesión backend: $e\n$stack',
         name: 'AUTH',
       );
+      rethrow;
     }
   }
 
