@@ -38,6 +38,11 @@ flutter gen-l10n
 dart run build_runner build --delete-conflicting-outputs
 dart run build_runner watch --delete-conflicting-outputs
 ```
+
+### Hive code generation (for models with TypeAdapters)
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
 ## 4) Single-Test Execution (Important)
 Use one of these when running only part of the suite:
 ```bash
@@ -49,6 +54,10 @@ flutter test test/widget_test.dart --plain-name "App smoke test"
 
 # alternate (all files, filtered by test name)
 flutter test --plain-name "App smoke test"
+
+# run specific test file in test/ directory
+flutter test test/auth_service_test.dart
+flutter test test/flashcard_model_test.dart
 ```
 Useful output mode for CI/debugging:
 ```bash
@@ -147,3 +156,5 @@ flutter test -r expanded
 - If localized text does not appear, confirm ARB keys exist in both languages and run `flutter gen-l10n`.
 - If Firebase errors appear locally, check whether `firebase_options.dart` is configured for that platform.
 - If analyzer warnings mention async context use, prefer `if (!mounted) return;` before using `context` after `await`.
+- If Hive adapter errors appear, ensure `*.g.dart` files are generated for models with `@HiveType` annotations.
+- If API calls fail, check `lib/core/network/backend_api.dart` and `backend_api_client.dart` for the base URL configuration.
