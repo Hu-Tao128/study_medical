@@ -82,6 +82,9 @@ class AuthService extends ChangeNotifier {
       if (firebaseUser != null) {
         _user = AuthUser(id: firebaseUser.uid, email: firebaseUser.email ?? '');
         developer.log('User logged in: ${_user?.email}', name: 'FIREBASE_AUTH');
+        _syncSessionWithBackend().catchError((e) {
+          developer.log('Initial sync failed: $e', name: 'AUTH');
+        });
       } else {
         _user = null;
         developer.log('User logged out', name: 'FIREBASE_AUTH');
