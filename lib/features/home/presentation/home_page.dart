@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../profile/presentation/providers/profile_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProfileProvider>().loadProfile();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,32 +49,56 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final profile = context.watch<ProfileProvider>().profile;
 
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: colorScheme.primary.withValues(alpha: 0.2),
+          GestureDetector(
+            onTap: () => context.go('/profile'),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: colorScheme.primary.withValues(alpha: 0.2),
+                ),
+                image: profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty
+                    ? DecorationImage(
+                        image: NetworkImage(profile.photoUrl!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
-            ),
-            child: CircleAvatar(
-              backgroundColor: colorScheme.primaryContainer,
-              child: Icon(Icons.person, color: colorScheme.primary, size: 24),
+              child: profile?.photoUrl == null || profile!.photoUrl!.isEmpty
+                  ? CircleAvatar(
+                      backgroundColor: colorScheme.primaryContainer,
+                      child: Icon(Icons.person, color: colorScheme.primary, size: 24),
+                    )
+                  : null,
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(
-              l10n.appTitle,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  profile != null ? 'Hola, ${profile.displayName ?? 'Estudiante'}' : l10n.appTitle,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                if (profile != null)
+                  Text(
+                    'Listo para estudiar?',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurface.withValues(alpha: 0.6),
+                    ),
+                  ),
+              ],
             ),
           ),
           IconButton(

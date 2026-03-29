@@ -12,6 +12,7 @@ import 'features/flashcard/data/flashcard_repository.dart';
 import 'features/flashcard/presentation/providers/flashcard_provider.dart';
 import 'features/settings/presentation/providers/theme_provider.dart';
 import 'features/settings/presentation/providers/locale_provider.dart';
+import 'features/profile/presentation/providers/profile_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -37,6 +38,8 @@ void main() async {
 
   final themeProvider = ThemeProvider(themeRepo);
   final localeProvider = LocaleProvider(themeRepo, backendApi);
+  final profileProvider = ProfileProvider(backendApi: backendApi);
+
   await themeProvider.init();
   await localeProvider.init();
 
@@ -45,6 +48,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider.value(value: themeProvider),
         ChangeNotifierProvider.value(value: localeProvider),
+        ChangeNotifierProvider.value(value: profileProvider),
         Provider<BackendApi>.value(value: backendApi),
         ChangeNotifierProvider(create: (_) => AuthService(backendApi)),
         ChangeNotifierProvider(

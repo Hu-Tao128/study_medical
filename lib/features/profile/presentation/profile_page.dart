@@ -5,27 +5,68 @@ import '../../../l10n/app_localizations.dart';
 import '../../auth/data/auth_service.dart';
 import '../../settings/presentation/providers/locale_provider.dart';
 import '../../settings/presentation/providers/theme_provider.dart';
+import '../presentation/providers/profile_provider.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProfileProvider>().loadProfile();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(child: _buildHeader(context, l10n)),
-            SliverToBoxAdapter(child: _buildProfileSection(context)),
-            SliverToBoxAdapter(child: _buildStatsSection(context)),
-            SliverToBoxAdapter(child: _buildAppearanceSection(context)),
-            SliverToBoxAdapter(child: _buildLanguageSection(context)),
-            SliverToBoxAdapter(child: _buildNotificationsSection(context)),
-            SliverToBoxAdapter(child: _buildSupportSection(context)),
-            SliverToBoxAdapter(child: _buildLogoutButton(context, l10n)),
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
-          ],
+        child: Consumer<ProfileProvider>(
+          builder: (context, provider, child) {
+            if (provider.isLoading && provider.profile == null) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (provider.error != null && provider.profile == null) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Error: ${provider.error}'),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => provider.loadProfile(),
+                      child: const Text('Reintentar'),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return RefreshIndicator(
+              onRefresh: () => provider.loadProfile(),
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(child: _buildHeader(context, l10n)),
+                  SliverToBoxAdapter(child: _buildProfileSection(context, provider)),
+                  SliverToBoxAdapter(child: _buildStatsSection(context)),
+                  SliverToBoxAdapter(child: _buildAppearanceSection(context)),
+                  SliverToBoxAdapter(child: _buildLanguageSection(context)),
+                  SliverToBoxAdapter(child: _buildNotificationsSection(context)),
+                  SliverToBoxAdapter(child: _buildSupportSection(context)),
+                  SliverToBoxAdapter(child: _buildLogoutButton(context, l10n)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -43,8 +84,9 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileSection(BuildContext context) {
+  Widget _buildProfileSection(BuildContext context, ProfileProvider provider) {
     final colorScheme = Theme.of(context).colorScheme;
+    final profile = provider.profile;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -67,12 +109,20 @@ class ProfilePage extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: colorScheme.primaryContainer,
+                    image: profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty
+                        ? DecorationImage(
+                            image: NetworkImage(profile.photoUrl!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
-                  child: Icon(
-                    Icons.person,
-                    size: 48,
-                    color: colorScheme.primary,
-                  ),
+                  child: profile?.photoUrl == null || profile!.photoUrl!.isEmpty
+                      ? Icon(
+                          Icons.person,
+                          size: 48,
+                          color: colorScheme.primary,
+                        )
+                      : null,
                 ),
                 Positioned(
                   right: 0,
@@ -99,14 +149,14 @@ class ProfilePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Dr. Alex Rivers',
+                    profile?.displayName ?? 'User',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Medical Student • Year 4',
+                    '${profile?.role ?? 'Medical Student'} • ${profile?.level ?? 'Year 1'}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.w500,
@@ -114,7 +164,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'alex.rivers@meduniversity.edu',
+                    profile?.email ?? '',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
