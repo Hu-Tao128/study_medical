@@ -9,6 +9,9 @@ class NoteModel {
   final bool aiGenerated;
   final String? aiModel;
   final String? aiSource;
+  final List<String> tags;
+  final bool isFavorite;
+  final bool isArchived;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -23,6 +26,9 @@ class NoteModel {
     this.aiGenerated = false,
     this.aiModel,
     this.aiSource,
+    this.tags = const [],
+    this.isFavorite = false,
+    this.isArchived = false,
     this.createdAt,
     this.updatedAt,
   });
@@ -66,6 +72,9 @@ class NoteModel {
           false,
       aiModel: json['aiModel'] as String? ?? json['ai_model'] as String?,
       aiSource: json['aiSource'] as String? ?? json['ai_source'] as String?,
+      tags: (json['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      isFavorite: json['isFavorite'] as bool? ?? json['is_favorite'] as bool? ?? false,
+      isArchived: json['isArchived'] as bool? ?? json['is_archived'] as bool? ?? false,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -82,6 +91,9 @@ class CreateNoteRequest {
   final bool aiGenerated;
   final String? aiModel;
   final String? aiSource;
+  final List<String>? tags;
+  final bool? isFavorite;
+  final bool? isArchived;
 
   const CreateNoteRequest({
     required this.userId,
@@ -93,6 +105,9 @@ class CreateNoteRequest {
     this.aiGenerated = false,
     this.aiModel,
     this.aiSource,
+    this.tags,
+    this.isFavorite,
+    this.isArchived,
   });
 
   Map<String, dynamic> toJson() {
@@ -106,6 +121,9 @@ class CreateNoteRequest {
       'aiGenerated': aiGenerated,
       if (aiModel != null) 'aiModel': aiModel,
       if (aiSource != null) 'aiSource': aiSource,
+      if (tags != null) 'tags': tags,
+      if (isFavorite != null) 'isFavorite': isFavorite,
+      if (isArchived != null) 'isArchived': isArchived,
     }..removeWhere((key, value) => value == null);
   }
 }
@@ -119,6 +137,9 @@ class UpdateNoteRequest {
   final bool? aiGenerated;
   final String? aiModel;
   final String? aiSource;
+  final List<String>? tags;
+  final bool? isFavorite;
+  final bool? isArchived;
 
   const UpdateNoteRequest({
     this.title,
@@ -129,6 +150,9 @@ class UpdateNoteRequest {
     this.aiGenerated,
     this.aiModel,
     this.aiSource,
+    this.tags,
+    this.isFavorite,
+    this.isArchived,
   });
 
   Map<String, dynamic> toJson() {
@@ -141,6 +165,9 @@ class UpdateNoteRequest {
       if (aiGenerated != null) 'aiGenerated': aiGenerated,
       if (aiModel != null) 'aiModel': aiModel,
       if (aiSource != null) 'aiSource': aiSource,
+      if (tags != null) 'tags': tags,
+      if (isFavorite != null) 'isFavorite': isFavorite,
+      if (isArchived != null) 'isArchived': isArchived,
     };
   }
 }

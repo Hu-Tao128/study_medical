@@ -32,8 +32,13 @@ void main() async {
 
   final themeRepo = LocalThemeRepository();
   final backendApi = BackendApi(
-    tokenProvider: () async =>
-        await firebase_auth.FirebaseAuth.instance.currentUser?.getIdToken(),
+    tokenProvider: () async {
+      final user = firebase_auth.FirebaseAuth.instance.currentUser;
+      print('Firebase user: ${user?.uid}');  // Debug
+      final token = await user?.getIdToken();
+      print('Token length: ${token?.length ?? 0}');  // Debug
+      return token;
+    },
   );
 
   final themeProvider = ThemeProvider(themeRepo);

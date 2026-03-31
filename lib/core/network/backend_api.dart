@@ -259,4 +259,17 @@ class BackendApi {
     }
     return true;
   }
+
+  Future<List<Map<String, String>>> getTopics() async {
+    final response = await _client.get<List<dynamic>>('/api/v1/topics');
+    final data = response.data;
+    if (data == null) return [];
+    return data.map((e) {
+      final map = e as Map<String, dynamic>;
+      return {
+        'id': map['id'] as String,
+        'name': map['name'] as String,
+      };
+    }).toList();
+  }
 }

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 const String _defaultBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'http://100.65.88.45:8080',
+  defaultValue: 'http://100.65.88.45:8081',
 );
 
 class BackendApiClient {

@@ -292,7 +292,14 @@ class AuthService extends ChangeNotifier {
 
   Future<void> signInWithGoogle() async {
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        signInOption: SignInOption.standard,
+        scopes: ['email', 'profile'],
+      );
+      
+      // Forzar selección de cuenta cerrando sesión anterior
+      await googleSignIn.signOut();
+      
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) return;
