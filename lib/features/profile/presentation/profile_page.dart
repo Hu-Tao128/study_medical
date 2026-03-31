@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/color_seed.dart';
+import '../../../core/theme/responsive_sizes.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/data/auth_service.dart';
 import '../../settings/presentation/providers/locale_provider.dart';
@@ -73,13 +74,17 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
+    final padding = ResponsiveSpacing.padding(context);
+    final fontSize = ResponsiveFontSizes.headlineSmall(context);
+    
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Text(
         l10n.profileTitle,
-        style: Theme.of(
-          context,
-        ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+          fontSize: fontSize,
+        ),
       ),
     );
   }
@@ -87,11 +92,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildProfileSection(BuildContext context, ProfileProvider provider) {
     final colorScheme = Theme.of(context).colorScheme;
     final profile = provider.profile;
+    final padding = ResponsiveSpacing.lg(context);
+    final avatarSize = ResponsiveIconSizes.avatar(context);
+    final iconSize = avatarSize * 0.6;
+    final cameraIconSize = iconSize * 0.3;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: padding),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(padding),
         decoration: BoxDecoration(
           color: colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
@@ -104,8 +113,8 @@ class _ProfilePageState extends State<ProfilePage> {
             Stack(
               children: [
                 Container(
-                  width: 80,
-                  height: 80,
+                  width: avatarSize,
+                  height: avatarSize,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: colorScheme.primaryContainer,
@@ -119,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: profile?.photoUrl == null || profile!.photoUrl!.isEmpty
                       ? Icon(
                           Icons.person,
-                          size: 48,
+                          size: iconSize,
                           color: colorScheme.primary,
                         )
                       : null,
@@ -128,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   right: 0,
                   bottom: 0,
                   child: Container(
-                    padding: const EdgeInsets.all(6),
+                    padding: EdgeInsets.all(iconSize * 0.08),
                     decoration: BoxDecoration(
                       color: colorScheme.primary,
                       shape: BoxShape.circle,
@@ -136,36 +145,36 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: Icon(
                       Icons.camera_alt,
-                      size: 14,
+                      size: cameraIconSize,
                       color: colorScheme.onPrimary,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: padding),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     profile?.displayName ?? 'User',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    style: Theme.of(context).textTheme.responsiveTitleMedium(context).copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: ResponsiveSpacing.xs(context)),
                   Text(
                     '${profile?.role ?? 'Medical Student'} • ${profile?.level ?? 'Year 1'}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context).textTheme.responsiveBodyMedium(context).copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: ResponsiveSpacing.xs(context)),
                   Text(
                     profile?.email ?? '',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    style: Theme.of(context).textTheme.responsiveBodySmall(context).copyWith(
                       color: colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
@@ -181,9 +190,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildStatsSection(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
+    final padding = ResponsiveSpacing.md(context);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Row(
         children: [
           _StatCard(
@@ -191,13 +201,13 @@ class _ProfilePageState extends State<ProfilePage> {
             value: '120',
             colorScheme: colorScheme,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: padding * 0.75),
           _StatCard(
             title: l10n.gpaLabel,
             value: '4.8',
             colorScheme: colorScheme,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: padding * 0.75),
           _StatCard(
             title: l10n.coursesLabel,
             value: '15',
@@ -212,17 +222,18 @@ class _ProfilePageState extends State<ProfilePage> {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
     final themeProvider = context.watch<ThemeProvider>();
+    final padding = ResponsiveSpacing.padding(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            padding: EdgeInsets.only(left: 4, bottom: padding * 0.5),
             child: Text(
               l10n.appearanceSection,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              style: Theme.of(context).textTheme.responsiveTitleSmall(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
               ),
@@ -264,17 +275,20 @@ class _ProfilePageState extends State<ProfilePage> {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
     final localeProvider = context.watch<LocaleProvider>();
+    final padding = ResponsiveSpacing.padding(context);
+    final iconSize = ResponsiveIconSizes.iconMedium(context);
+    final labelSize = ResponsiveFontSizes.labelSmall(context);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            padding: EdgeInsets.only(left: 4, bottom: padding * 0.5),
             child: Text(
               l10n.languageSection,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              style: Theme.of(context).textTheme.responsiveTitleSmall(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
               ),
@@ -289,22 +303,22 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(padding),
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: EdgeInsets.all(iconSize * 0.4),
                     decoration: BoxDecoration(
                       color: colorScheme.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(Icons.language, color: colorScheme.primary),
+                    child: Icon(Icons.language, color: colorScheme.primary, size: iconSize),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: padding),
                   Expanded(
                     child: Text(
                       l10n.languageTitle,
-                      style: Theme.of(context).textTheme.bodyLarge,
+                      style: Theme.of(context).textTheme.responsiveBodyMedium(context),
                     ),
                   ),
                   SegmentedButton<Locale>(
@@ -313,14 +327,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         value: const Locale('en'),
                         label: Text(
                           l10n.englishLabel,
-                          style: const TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: labelSize),
                         ),
                       ),
                       ButtonSegment(
                         value: const Locale('es'),
                         label: Text(
                           l10n.spanishLabel,
-                          style: const TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: labelSize),
                         ),
                       ),
                     ],
@@ -345,17 +359,18 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildNotificationsSection(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
+    final padding = ResponsiveSpacing.padding(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            padding: EdgeInsets.only(left: 4, bottom: padding * 0.5),
             child: Text(
               l10n.notificationsSection,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              style: Theme.of(context).textTheme.responsiveTitleSmall(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
               ),
@@ -411,17 +426,18 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildSupportSection(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
+    final padding = ResponsiveSpacing.padding(context);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            padding: EdgeInsets.only(left: 4, bottom: padding * 0.5),
             child: Text(
               l10n.supportSection,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              style: Theme.of(context).textTheme.responsiveTitleSmall(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
               ),
@@ -464,8 +480,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildLogoutButton(BuildContext context, AppLocalizations l10n) {
+    final padding = ResponsiveSpacing.padding(context);
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: padding),
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton.icon(
@@ -497,7 +515,7 @@ class _ProfilePageState extends State<ProfilePage> {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red.shade50,
             foregroundColor: Colors.red,
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: EdgeInsets.symmetric(vertical: padding * 1.25),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -521,9 +539,13 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final padding = ResponsiveSpacing.md(context);
+    final headlineSize = ResponsiveFontSizes.headlineSmall(context);
+    final bodySize = ResponsiveFontSizes.bodySmall(context);
+
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: padding),
         decoration: BoxDecoration(
           color: colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
@@ -538,13 +560,15 @@ class _StatCard extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: colorScheme.primary,
+                fontSize: headlineSize,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: ResponsiveSpacing.xs(context)),
             Text(
               title,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurface.withValues(alpha: 0.6),
+                fontSize: bodySize,
               ),
             ),
           ],
@@ -568,38 +592,41 @@ class _ThemeModeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final iconSize = ResponsiveIconSizes.iconSmall(context);
+    final padding = ResponsiveSpacing.md(context);
+
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(padding * 0.75),
             decoration: BoxDecoration(
               color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.dark_mode, color: colorScheme.primary),
+            child: Icon(Icons.dark_mode, color: colorScheme.primary, size: iconSize + 4),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: padding),
           Expanded(
             child: Text(
               l10n.darkModeLabel,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.responsiveBodyMedium(context),
             ),
           ),
           SegmentedButton<ThemeMode>(
-            segments: const [
+            segments: [
               ButtonSegment(
                 value: ThemeMode.light,
-                icon: Icon(Icons.light_mode, size: 18),
+                icon: Icon(Icons.light_mode, size: iconSize),
               ),
               ButtonSegment(
                 value: ThemeMode.system,
-                icon: Icon(Icons.brightness_auto, size: 18),
+                icon: Icon(Icons.brightness_auto, size: iconSize),
               ),
               ButtonSegment(
                 value: ThemeMode.dark,
-                icon: Icon(Icons.dark_mode, size: 18),
+                icon: Icon(Icons.dark_mode, size: iconSize),
               ),
             ],
             selected: {currentMode},
@@ -629,35 +656,39 @@ class _ColorPaletteRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final circleSize = ResponsiveIconSizes.colorCircle(context);
+    final checkSize = ResponsiveIconSizes.checkIcon(context);
+    final padding = ResponsiveSpacing.md(context);
+
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(padding * 0.75),
             decoration: BoxDecoration(
               color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.palette, color: colorScheme.primary),
+            child: Icon(Icons.palette, color: colorScheme.primary, size: circleSize),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: padding),
           Expanded(
             child: Text(
               l10n.accentColorLabel,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.responsiveBodyMedium(context),
             ),
           ),
           Wrap(
-            spacing: 8,
+            spacing: padding * 0.5,
             children: ColorSeed.values.map((seed) {
               final isSelected = currentSeed == seed;
               return GestureDetector(
                 onTap: () => onChanged(seed),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  width: 28,
-                  height: 28,
+                  width: circleSize,
+                  height: circleSize,
                   decoration: BoxDecoration(
                     color: seed.color,
                     shape: BoxShape.circle,
@@ -674,7 +705,7 @@ class _ColorPaletteRow extends StatelessWidget {
                         : null,
                   ),
                   child: isSelected
-                      ? const Icon(Icons.check, color: Colors.white, size: 16)
+                      ? Icon(Icons.check, color: Colors.white, size: checkSize)
                       : null,
                 ),
               );

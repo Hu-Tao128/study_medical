@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/color_seed.dart';
+import '../../../core/theme/responsive_sizes.dart';
 import '../../../l10n/app_localizations.dart';
 import 'providers/theme_provider.dart';
 
@@ -111,38 +112,43 @@ class _ThemeModeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final iconSize = ResponsiveIconSizes.iconSmall(context);
+    final padding = ResponsiveSpacing.md(context);
+    
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(padding * 0.75),
             decoration: BoxDecoration(
               color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.dark_mode, color: colorScheme.primary),
+            child: Icon(Icons.dark_mode, color: colorScheme.primary, size: iconSize + 4),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: padding),
           Expanded(
             child: Text(
               l10n.darkModeLabel,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.responsiveBodyMedium(context),
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           SegmentedButton<ThemeMode>(
-            segments: const [
+            segments: [
               ButtonSegment(
                 value: ThemeMode.light,
-                icon: Icon(Icons.light_mode, size: 18),
+                icon: Icon(Icons.light_mode, size: iconSize),
               ),
               ButtonSegment(
                 value: ThemeMode.system,
-                icon: Icon(Icons.brightness_auto, size: 18),
+                icon: Icon(Icons.brightness_auto, size: iconSize),
               ),
               ButtonSegment(
                 value: ThemeMode.dark,
-                icon: Icon(Icons.dark_mode, size: 18),
+                icon: Icon(Icons.dark_mode, size: iconSize),
               ),
             ],
             selected: {currentMode},
@@ -172,35 +178,41 @@ class _ColorPaletteSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final circleSize = ResponsiveIconSizes.colorCircle(context);
+    final checkSize = ResponsiveIconSizes.checkIcon(context);
+    final padding = ResponsiveSpacing.md(context);
+    
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(padding * 0.75),
             decoration: BoxDecoration(
               color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.palette, color: colorScheme.primary),
+            child: Icon(Icons.palette, color: colorScheme.primary, size: circleSize),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: padding),
           Expanded(
             child: Text(
               l10n.accentColorLabel,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.responsiveBodyMedium(context),
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           Wrap(
-            spacing: 8,
+            spacing: padding * 0.5,
             children: ColorSeed.values.map((seed) {
               final isSelected = currentSeed == seed;
               return GestureDetector(
                 onTap: () => onChanged(seed),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  width: 28,
-                  height: 28,
+                  width: circleSize,
+                  height: circleSize,
                   decoration: BoxDecoration(
                     color: seed.color,
                     shape: BoxShape.circle,
@@ -217,7 +229,7 @@ class _ColorPaletteSelector extends StatelessWidget {
                         : null,
                   ),
                   child: isSelected
-                      ? const Icon(Icons.check, color: Colors.white, size: 16)
+                      ? Icon(Icons.check, color: Colors.white, size: checkSize)
                       : null,
                 ),
               );
