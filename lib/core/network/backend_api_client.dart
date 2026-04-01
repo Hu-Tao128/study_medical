@@ -1,9 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-const String _defaultBaseUrl = String.fromEnvironment(
-  'API_BASE_URL',
-  defaultValue: 'http://100.65.88.45:8081',
-);
+String get _defaultBaseUrl {
+  final url = dotenv.env['API_BASE_URL'];
+  if (url == null || url.isEmpty) {
+    throw Exception('API_BASE_URL no definida en .env');
+  }
+  return url;
+}
 
 class BackendApiClient {
   BackendApiClient({
