@@ -61,13 +61,13 @@ class _MyAppState extends State<MyApp> {
         theme: AppTheme.light(themeProvider.colorSeed).copyWith(
           // Asegurar tamaños de fuente consistentes
           textTheme: AppTheme.light(themeProvider.colorSeed).textTheme.apply(
-            fontSizeFactor: 1.0,  // Factor de escala fijo
+            fontSizeFactor: 1.0, // Factor de escala fijo
           ),
         ),
         darkTheme: AppTheme.dark(themeProvider.colorSeed).copyWith(
-          textTheme: AppTheme.dark(themeProvider.colorSeed).textTheme.apply(
-            fontSizeFactor: 1.0,
-          ),
+          textTheme: AppTheme.dark(
+            themeProvider.colorSeed,
+          ).textTheme.apply(fontSizeFactor: 1.0),
         ),
         routerConfig: _router!,
       ),

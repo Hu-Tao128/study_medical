@@ -173,6 +173,25 @@ class BackendApi {
         .toList(growable: false);
   }
 
+  Future<List<NoteModel>> getNotesChangedSince(String sinceIso) async {
+    try {
+      final response = await _client.get<List<dynamic>>(
+        '/api/v1/notes/changed',
+        queryParameters: {'since': sinceIso},
+      );
+      final data = response.data;
+      if (data == null) {
+        return const [];
+      }
+      return data
+          .whereType<Map<String, dynamic>>()
+          .map(NoteModel.fromJson)
+          .toList(growable: false);
+    } catch (e) {
+      return const [];
+    }
+  }
+
   Future<List<NoteModel>> getNotes({String? topicId}) async {
     final response = await _client.get<List<dynamic>>(
       '/api/v1/notes',
@@ -266,10 +285,7 @@ class BackendApi {
     if (data == null) return [];
     return data.map((e) {
       final map = e as Map<String, dynamic>;
-      return {
-        'id': map['id'] as String,
-        'name': map['name'] as String,
-      };
+      return {'id': map['id'] as String, 'name': map['name'] as String};
     }).toList();
   }
 }

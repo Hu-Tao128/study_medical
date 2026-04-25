@@ -50,6 +50,7 @@ dependencies:
   flutter_markdown: ^0.7.5+2
   flutter_quill: ^11.5.0
   flutter_dotenv: ^6.0.0
+  connectivity_plus: ^6.0.0
 
 dev_dependencies:
   flutter_test:
