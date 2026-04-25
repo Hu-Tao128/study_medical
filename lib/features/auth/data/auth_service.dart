@@ -296,10 +296,10 @@ class AuthService extends ChangeNotifier {
         signInOption: SignInOption.standard,
         scopes: ['email', 'profile'],
       );
-      
+
       // Forzar selección de cuenta cerrando sesión anterior
       await googleSignIn.signOut();
-      
+
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) return;
