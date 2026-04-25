@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:study_medical/core/network/backend_api.dart';
-import 'package:study_medical/core/network/backend_api_client.dart';
 import 'package:study_medical/features/auth/data/auth_service.dart';
 import 'package:study_medical/features/notes/data/note_model.dart';
+import 'package:study_medical/features/notes/presentation/providers/note_provider.dart';
+import '../../../l10n/app_localizations.dart';
 
 class NoteEditorPage extends StatefulWidget {
   final String? noteId;
@@ -59,33 +59,32 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
       _error = null;
     });
     try {
-      final api = context.read<BackendApi>();
-      final topics = await api.getTopics();
-      if (!mounted) return;
-      setState(() => _topics = topics);
+      final provider = context.read<NoteProvider>();
 
       if (widget.noteId != null) {
-        final note = await api.getNoteById(widget.noteId!);
+        final note = await provider.getNoteById(widget.noteId!);
         if (!mounted) return;
-        _titleController.text = note.title;
-        _isFavorite = note.isFavorite;
-        _tagsController.text = note.tags.join(', ');
+        if (note != null) {
+          _titleController.text = note.title;
+          _isFavorite = note.isFavorite;
+          _tagsController.text = note.tags.join(', ');
 
-        if (note.contentMd.isNotEmpty) {
-          _quillController = QuillController(
-            document: Document()..insert(0, note.contentMd),
-            selection: const TextSelection.collapsed(offset: 0),
-          );
-        }
+          if (note.contentMd.isNotEmpty) {
+            _quillController = QuillController(
+              document: Document()..insert(0, note.contentMd),
+              selection: const TextSelection.collapsed(offset: 0),
+            );
+          }
 
-        if (note.topicId != null && _topics.any((t) => t['id'] == note.topicId)) {
-          _selectedTopicId = note.topicId;
+          if (note.topicId != null) {
+            _selectedTopicId = note.topicId;
+          }
         }
       }
     } catch (error) {
       if (!mounted) return;
       setState(() {
-        _error = error is BackendApiException ? error.message : error.toString();
+        _error = error.toString();
       });
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -123,9 +122,10 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
     });
 
     try {
-      final api = context.read<BackendApi>();
+      final provider = context.read<NoteProvider>();
+
       if (widget.noteId == null) {
-        await api.createNote(
+        await provider.createNote(
           CreateNoteRequest(
             userId: userId,
             title: title,
@@ -136,7 +136,7 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
           ),
         );
       } else {
-        await api.patchNote(
+        await provider.updateNote(
           widget.noteId!,
           UpdateNoteRequest(
             title: title,
@@ -152,8 +152,18 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
       context.pop();
     } catch (error) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      String errorMsg;
+      if (error.toString().contains('SocketException') ||
+          error.toString().contains('ConnectException') ||
+          error.toString().contains('handshake')) {
+        errorMsg =
+            l10n?.serverConnectionError ?? 'No se pudo conectar al servidor';
+      } else {
+        errorMsg = error.toString();
+      }
       setState(() {
-        _error = error is BackendApiException ? error.message : error.toString();
+        _error = errorMsg;
       });
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -239,8 +249,11 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
                                   ),
                                   child: Row(
                                     children: [
-                                      Icon(Icons.error_outline, 
-                                          color: colorScheme.onErrorContainer, size: 20),
+                                      Icon(
+                                        Icons.error_outline,
+                                        color: colorScheme.onErrorContainer,
+                                        size: 20,
+                                      ),
                                       const SizedBox(width: 8),
                                       Expanded(
                                         child: Text(
@@ -266,7 +279,9 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
                                 hintText: 'Título de la nota',
                                 border: InputBorder.none,
                                 hintStyle: textTheme.headlineSmall?.copyWith(
-                                  color: colorScheme.onSurface.withValues(alpha: 0.25),
+                                  color: colorScheme.onSurface.withValues(
+                                    alpha: 0.25,
+                                  ),
                                   fontWeight: FontWeight.w700,
                                 ),
                                 contentPadding: EdgeInsets.zero,
@@ -279,12 +294,15 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
                               selectedTopicId: _selectedTopicId,
                               topics: _topics,
                               tagsController: _tagsController,
-                              onTopicChanged: (v) => setState(() => _selectedTopicId = v),
+                              onTopicChanged: (v) =>
+                                  setState(() => _selectedTopicId = v),
                             ),
                             const SizedBox(height: 24),
                             Container(
                               height: 1,
-                              color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                              color: colorScheme.outlineVariant.withValues(
+                                alpha: 0.5,
+                              ),
                             ),
                             const SizedBox(height: 20),
                             Text(
@@ -402,30 +420,6 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
         duration: Duration(seconds: 3),
       ),
     );
-
-    // Para implementar imágenes, sigue estos pasos:
-    //
-    // 1. Agrega image_picker en pubspec.yaml:
-    //    image_picker: ^1.0.0
-    //
-    // 2. Importa el paquete:
-    //    import 'package:image_picker/image_picker.dart';
-    //
-    // 3. Implementa la función:
-    //    final picker = ImagePicker();
-    //    final file = await picker.pickImage(source: ImageSource.gallery);
-    //    if (file != null) {
-    //      // Sube la imagen a tu servicio de storage (Firebase Storage, S3, etc.)
-    //      // y luego inserta el embed:
-    //      final url = await yourStorageService.upload(file);
-    //      final index = _quillController.selection.baseOffset;
-    //      _quillController.replaceText(
-    //        index,
-    //        0,
-    //        BlockEmbed.image(url),
-    //        null,
-    //      );
-    //    }
   }
 
   Widget _MetadataSection({
@@ -466,7 +460,10 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: colorScheme.outlineVariant),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     isDense: true,
                   ),
                   hint: Text(
@@ -481,10 +478,12 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
                       value: null,
                       child: Text('Sin tema'),
                     ),
-                    ...topics.map((t) => DropdownMenuItem(
-                      value: t['id'],
-                      child: Text(t['name'] ?? ''),
-                    )),
+                    ...topics.map(
+                      (t) => DropdownMenuItem(
+                        value: t['id'],
+                        child: Text(t['name'] ?? ''),
+                      ),
+                    ),
                   ],
                   onChanged: onTopicChanged,
                 ),
@@ -501,7 +500,9 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
                     ),
                     hintText: 'cardiología, diagnóstico...',
                     hintStyle: textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                      color: colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.6,
+                      ),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -511,7 +512,10 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: colorScheme.outlineVariant),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     isDense: true,
                     prefixIcon: Padding(
                       padding: const EdgeInsets.only(left: 8, right: 4),
@@ -521,7 +525,10 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+                    prefixIconConstraints: const BoxConstraints(
+                      minWidth: 0,
+                      minHeight: 0,
+                    ),
                   ),
                   style: textTheme.bodyMedium,
                 ),

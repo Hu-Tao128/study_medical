@@ -16,7 +16,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ProfileProvider>().loadProfile();
+      final provider = context.read<ProfileProvider>();
+      provider.initFromCache();
+      provider.loadProfile();
     });
   }
 
@@ -65,7 +67,8 @@ class _Header extends StatelessWidget {
                 border: Border.all(
                   color: colorScheme.primary.withValues(alpha: 0.2),
                 ),
-                image: profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty
+                image:
+                    profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty
                     ? DecorationImage(
                         image: NetworkImage(profile.photoUrl!),
                         fit: BoxFit.cover,
@@ -75,7 +78,11 @@ class _Header extends StatelessWidget {
               child: profile?.photoUrl == null || profile!.photoUrl!.isEmpty
                   ? CircleAvatar(
                       backgroundColor: colorScheme.primaryContainer,
-                      child: Icon(Icons.person, color: colorScheme.primary, size: 24),
+                      child: Icon(
+                        Icons.person,
+                        color: colorScheme.primary,
+                        size: 24,
+                      ),
                     )
                   : null,
             ),
@@ -86,10 +93,12 @@ class _Header extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  profile != null ? 'Hola, ${profile.displayName ?? 'Estudiante'}' : l10n.appTitle,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  profile != null
+                      ? 'Hola, ${profile.displayName ?? 'Estudiante'}'
+                      : l10n.appTitle,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 if (profile != null)
                   Text(

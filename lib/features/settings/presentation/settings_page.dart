@@ -114,7 +114,7 @@ class _ThemeModeSelector extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final iconSize = ResponsiveIconSizes.iconSmall(context);
     final padding = ResponsiveSpacing.md(context);
-    
+
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Row(
@@ -125,7 +125,11 @@ class _ThemeModeSelector extends StatelessWidget {
               color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.dark_mode, color: colorScheme.primary, size: iconSize + 4),
+            child: Icon(
+              Icons.dark_mode,
+              color: colorScheme.primary,
+              size: iconSize + 4,
+            ),
           ),
           SizedBox(width: padding),
           Expanded(
@@ -181,7 +185,7 @@ class _ColorPaletteSelector extends StatelessWidget {
     final circleSize = ResponsiveIconSizes.colorCircle(context);
     final checkSize = ResponsiveIconSizes.checkIcon(context);
     final padding = ResponsiveSpacing.md(context);
-    
+
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Row(
@@ -192,7 +196,11 @@ class _ColorPaletteSelector extends StatelessWidget {
               color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.palette, color: colorScheme.primary, size: circleSize),
+            child: Icon(
+              Icons.palette,
+              color: colorScheme.primary,
+              size: circleSize,
+            ),
           ),
           SizedBox(width: padding),
           Expanded(

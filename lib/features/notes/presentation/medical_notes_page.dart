@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:study_medical/core/network/backend_api.dart';
-import 'package:study_medical/core/network/backend_api_client.dart';
 import 'package:study_medical/features/notes/data/note_model.dart';
+import 'package:study_medical/features/notes/presentation/providers/note_provider.dart';
 
 import '../../../l10n/app_localizations.dart';
 
@@ -15,10 +14,6 @@ class MedicalNotesPage extends StatefulWidget {
 }
 
 class _MedicalNotesPageState extends State<MedicalNotesPage> {
-  List<NoteModel> _allNotes = [];
-  List<NoteModel> _filteredNotes = [];
-  bool _isLoading = false;
-  String? _error;
   final TextEditingController _searchController = TextEditingController();
   bool _showOnlyFavorites = false;
 
@@ -27,7 +22,7 @@ class _MedicalNotesPageState extends State<MedicalNotesPage> {
     super.initState();
     _searchController.addListener(_onSearchChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadNotes();
+      context.read<NoteProvider>().loadNotes();
     });
   }
 
@@ -38,71 +33,56 @@ class _MedicalNotesPageState extends State<MedicalNotesPage> {
   }
 
   void _onSearchChanged() {
-    _applyFilters();
-  }
-
-  void _applyFilters() {
-    final query = _searchController.text.toLowerCase();
-    setState(() {
-      _filteredNotes = _allNotes.where((note) {
-        final matchesSearch = note.title.toLowerCase().contains(query) ||
-            note.contentMd.toLowerCase().contains(query) ||
-            note.tags.any((tag) => tag.toLowerCase().contains(query));
-        
-        final matchesFavorite = !_showOnlyFavorites || note.isFavorite;
-        
-        return matchesSearch && matchesFavorite;
-      }).toList();
-    });
-  }
-
-  Future<void> _loadNotes() async {
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
-
-    try {
-      final api = context.read<BackendApi>();
-      final notes = await api.getNotes();
-      if (!mounted) return;
-      setState(() {
-        _allNotes = notes;
-        _applyFilters();
-      });
-    } catch (error) {
-      if (!mounted) return;
-      setState(() {
-        _error = error is BackendApiException ? error.message : error.toString();
-      });
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    }
+    final noteProvider = context.read<NoteProvider>();
+    noteProvider.filterNotes(
+      _searchController.text,
+      showOnlyFavorites: _showOnlyFavorites,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
+    final noteProvider = context.watch<NoteProvider>();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.medicalNotes),
         actions: [
+          if (noteProvider.hasPendingSync)
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: Chip(
+                avatar: noteProvider.isSyncing
+                    ? const SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Icon(Icons.cloud_sync, size: 16, color: Colors.orange),
+                label: Text('${noteProvider.pendingSyncCount}'),
+                visualDensity: VisualDensity.compact,
+              ),
+            ),
           IconButton(
-            icon: Icon(_showOnlyFavorites ? Icons.star : Icons.star_border,
-                 color: _showOnlyFavorites ? Colors.amber : null),
+            icon: Icon(
+              _showOnlyFavorites ? Icons.star : Icons.star_border,
+              color: _showOnlyFavorites ? Colors.amber : null,
+            ),
             onPressed: () {
-              setState(() => _showOnlyFavorites = !_showOnlyFavorites);
-              _applyFilters();
+              final newValue = !_showOnlyFavorites;
+              setState(() => _showOnlyFavorites = newValue);
+              noteProvider.filterNotes(
+                _searchController.text,
+                showOnlyFavorites: newValue,
+              );
             },
             tooltip: 'Ver favoritas',
           ),
           IconButton(
             tooltip: l10n.retryButton,
-            onPressed: _loadNotes,
+            onPressed: () => noteProvider.loadNotes(),
             icon: const Icon(Icons.refresh),
           ),
         ],
@@ -115,14 +95,16 @@ class _MedicalNotesPageState extends State<MedicalNotesPage> {
               decoration: InputDecoration(
                 hintText: 'Buscar en mis notas y etiquetas...',
                 prefixIcon: const Icon(Icons.search),
-                suffixIcon: _searchController.text.isNotEmpty 
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () => _searchController.clear(),
-                    )
-                  : null,
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () => _searchController.clear(),
+                      )
+                    : null,
                 filled: true,
-                fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                fillColor: colorScheme.surfaceContainerHighest.withValues(
+                  alpha: 0.5,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -135,7 +117,10 @@ class _MedicalNotesPageState extends State<MedicalNotesPage> {
       ),
       body: _buildBody(context, colorScheme, l10n),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/notes/new').then((_) => _loadNotes()),
+        onPressed: () {
+          final provider = context.read<NoteProvider>();
+          context.push('/notes/new').then((_) => provider.loadNotes());
+        },
         child: const Icon(Icons.add),
       ),
     );
@@ -159,21 +144,23 @@ class _MedicalNotesPageState extends State<MedicalNotesPage> {
     ColorScheme colorScheme,
     AppLocalizations l10n,
   ) {
-    if (_isLoading) {
+    final noteProvider = context.watch<NoteProvider>();
+
+    if (noteProvider.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (_error != null) {
+    if (noteProvider.error != null) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(_error!, textAlign: TextAlign.center),
+              Text(noteProvider.error!, textAlign: TextAlign.center),
               const SizedBox(height: 12),
               ElevatedButton(
-                onPressed: _loadNotes,
+                onPressed: () => noteProvider.loadNotes(),
                 child: Text(l10n.retryButton),
               ),
             ],
@@ -182,33 +169,61 @@ class _MedicalNotesPageState extends State<MedicalNotesPage> {
       );
     }
 
-    if (_allNotes.isEmpty) {
+    if (noteProvider.allNotes.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(32),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.note_add_outlined, size: 64, color: colorScheme.primary.withValues(alpha: 0.5)),
+              Icon(
+                Icons.note_add_outlined,
+                size: 64,
+                color: colorScheme.primary.withValues(alpha: 0.5),
+              ),
               const SizedBox(height: 16),
-              Text('No hay notas creadas', style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                'No hay notas creadas',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: 8),
-              Text('Presiona + para crear una nueva nota médica', textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant)),
+              Text(
+                'Presiona + para crear una nueva nota médica',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
         ),
       );
     }
 
-    if (_filteredNotes.isEmpty) {
+    if (noteProvider.filteredNotes.isEmpty) {
       return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.search_off, size: 48, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text('No se encontraron resultados', style: Theme.of(context).textTheme.bodyLarge),
+            Icon(
+              Icons.search_off,
+              size: 48,
+              color: colorScheme.primary.withValues(alpha: 0.5),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'No hay resultados',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () {
+                _searchController.clear();
+                _showOnlyFavorites = false;
+                noteProvider.filterNotes('', showOnlyFavorites: false);
+              },
+              child: const Text('Limpiar filtros'),
+            ),
           ],
         ),
       );
@@ -216,18 +231,20 @@ class _MedicalNotesPageState extends State<MedicalNotesPage> {
 
     return ListView.separated(
       padding: const EdgeInsets.all(16),
-      itemCount: _filteredNotes.length,
+      itemCount: noteProvider.filteredNotes.length,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
-        final note = _filteredNotes[index];
+        final note = noteProvider.filteredNotes[index];
         final date = note.updatedAt ?? note.createdAt;
         final preview = note.aiSummary ?? _cleanPreview(note.contentMd);
-        
+
         return _NoteCard(
           note: note,
           preview: preview,
           date: date,
-          onTap: () => context.push('/notes/${note.id}').then((_) => _loadNotes()),
+          onTap: () => context
+              .push('/notes/${note.id}')
+              .then((_) => noteProvider.loadNotes()),
         );
       },
     );
@@ -251,7 +268,7 @@ class _NoteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    
+
     return Hero(
       tag: 'note_${note.id}',
       child: Material(
@@ -265,7 +282,7 @@ class _NoteCard extends StatelessWidget {
               color: colorScheme.surfaceContainerLow,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: note.isFavorite 
+                color: note.isFavorite
                     ? colorScheme.primary.withValues(alpha: 0.3)
                     : colorScheme.outlineVariant.withValues(alpha: 0.5),
                 width: note.isFavorite ? 1.5 : 1,
@@ -334,7 +351,10 @@ class _NoteCard extends StatelessWidget {
                     children: [
                       if (note.aiGenerated)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
@@ -363,11 +383,15 @@ class _NoteCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ...note.tags.take(3).map((tag) => _TagChip(
-                        tag: tag,
-                        colorScheme: colorScheme,
-                        textTheme: textTheme,
-                      )),
+                      ...note.tags
+                          .take(3)
+                          .map(
+                            (tag) => _TagChip(
+                              tag: tag,
+                              colorScheme: colorScheme,
+                              textTheme: textTheme,
+                            ),
+                          ),
                       if (note.tags.length > 3)
                         _TagChip(
                           tag: '+${note.tags.length - 3}',
@@ -390,7 +414,7 @@ class _NoteCard extends StatelessWidget {
     if (date == null) return '--';
     final now = DateTime.now();
     final diff = now.difference(date);
-    
+
     if (diff.inDays == 0) {
       return 'Hoy';
     } else if (diff.inDays == 1) {
@@ -398,7 +422,20 @@ class _NoteCard extends StatelessWidget {
     } else if (diff.inDays < 7) {
       return '${diff.inDays}d';
     } else {
-      final months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+      final months = [
+        'Ene',
+        'Feb',
+        'Mar',
+        'Abr',
+        'May',
+        'Jun',
+        'Jul',
+        'Ago',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dic',
+      ];
       return '${date.day} ${months[date.month - 1]}';
     }
   }
@@ -422,7 +459,7 @@ class _TagChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: isMuted 
+        color: isMuted
             ? colorScheme.surfaceContainerHighest.withValues(alpha: 0.5)
             : colorScheme.primaryContainer.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(6),
@@ -430,7 +467,7 @@ class _TagChip extends StatelessWidget {
       child: Text(
         tag.startsWith('#') ? tag : '#$tag',
         style: textTheme.labelSmall?.copyWith(
-          color: isMuted 
+          color: isMuted
               ? colorScheme.onSurfaceVariant
               : colorScheme.onPrimaryContainer,
           fontWeight: FontWeight.w500,

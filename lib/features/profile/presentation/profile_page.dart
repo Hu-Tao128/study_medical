@@ -20,7 +20,9 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ProfileProvider>().loadProfile();
+      final provider = context.read<ProfileProvider>();
+      provider.initFromCache();
+      provider.loadProfile();
     });
   }
 
@@ -56,11 +58,15 @@ class _ProfilePageState extends State<ProfilePage> {
               child: CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(child: _buildHeader(context, l10n)),
-                  SliverToBoxAdapter(child: _buildProfileSection(context, provider)),
+                  SliverToBoxAdapter(
+                    child: _buildProfileSection(context, provider),
+                  ),
                   SliverToBoxAdapter(child: _buildStatsSection(context)),
                   SliverToBoxAdapter(child: _buildAppearanceSection(context)),
                   SliverToBoxAdapter(child: _buildLanguageSection(context)),
-                  SliverToBoxAdapter(child: _buildNotificationsSection(context)),
+                  SliverToBoxAdapter(
+                    child: _buildNotificationsSection(context),
+                  ),
                   SliverToBoxAdapter(child: _buildSupportSection(context)),
                   SliverToBoxAdapter(child: _buildLogoutButton(context, l10n)),
                   const SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -76,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
     final padding = ResponsiveSpacing.padding(context);
     final fontSize = ResponsiveFontSizes.headlineSmall(context);
-    
+
     return Padding(
       padding: EdgeInsets.all(padding),
       child: Text(
@@ -118,7 +124,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: colorScheme.primaryContainer,
-                    image: profile?.photoUrl != null && profile!.photoUrl!.isNotEmpty
+                    image:
+                        profile?.photoUrl != null &&
+                            profile!.photoUrl!.isNotEmpty
                         ? DecorationImage(
                             image: NetworkImage(profile.photoUrl!),
                             fit: BoxFit.cover,
@@ -159,24 +167,28 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     profile?.displayName ?? 'User',
-                    style: Theme.of(context).textTheme.responsiveTitleMedium(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme
+                        .responsiveTitleMedium(context)
+                        .copyWith(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: ResponsiveSpacing.xs(context)),
                   Text(
                     '${profile?.role ?? 'Medical Student'} • ${profile?.level ?? 'Year 1'}',
-                    style: Theme.of(context).textTheme.responsiveBodyMedium(context).copyWith(
-                      color: colorScheme.primary,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme
+                        .responsiveBodyMedium(context)
+                        .copyWith(
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                   SizedBox(height: ResponsiveSpacing.xs(context)),
                   Text(
                     profile?.email ?? '',
-                    style: Theme.of(context).textTheme.responsiveBodySmall(context).copyWith(
-                      color: colorScheme.onSurface.withValues(alpha: 0.6),
-                    ),
+                    style: Theme.of(context).textTheme
+                        .responsiveBodySmall(context)
+                        .copyWith(
+                          color: colorScheme.onSurface.withValues(alpha: 0.6),
+                        ),
                   ),
                 ],
               ),
@@ -233,10 +245,12 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.only(left: 4, bottom: padding * 0.5),
             child: Text(
               l10n.appearanceSection,
-              style: Theme.of(context).textTheme.responsiveTitleSmall(context).copyWith(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
+              style: Theme.of(context).textTheme
+                  .responsiveTitleSmall(context)
+                  .copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
             ),
           ),
           Container(
@@ -288,10 +302,12 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.only(left: 4, bottom: padding * 0.5),
             child: Text(
               l10n.languageSection,
-              style: Theme.of(context).textTheme.responsiveTitleSmall(context).copyWith(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
+              style: Theme.of(context).textTheme
+                  .responsiveTitleSmall(context)
+                  .copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
             ),
           ),
           Container(
@@ -312,13 +328,19 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: colorScheme.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(Icons.language, color: colorScheme.primary, size: iconSize),
+                    child: Icon(
+                      Icons.language,
+                      color: colorScheme.primary,
+                      size: iconSize,
+                    ),
                   ),
                   SizedBox(width: padding),
                   Expanded(
                     child: Text(
                       l10n.languageTitle,
-                      style: Theme.of(context).textTheme.responsiveBodyMedium(context),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.responsiveBodyMedium(context),
                     ),
                   ),
                   SegmentedButton<Locale>(
@@ -370,10 +392,12 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.only(left: 4, bottom: padding * 0.5),
             child: Text(
               l10n.notificationsSection,
-              style: Theme.of(context).textTheme.responsiveTitleSmall(context).copyWith(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
+              style: Theme.of(context).textTheme
+                  .responsiveTitleSmall(context)
+                  .copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
             ),
           ),
           Container(
@@ -437,10 +461,12 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.only(left: 4, bottom: padding * 0.5),
             child: Text(
               l10n.supportSection,
-              style: Theme.of(context).textTheme.responsiveTitleSmall(context).copyWith(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
+              style: Theme.of(context).textTheme
+                  .responsiveTitleSmall(context)
+                  .copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
             ),
           ),
           Container(
@@ -501,6 +527,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   TextButton(
                     onPressed: () {
                       Navigator.of(ctx).pop();
+                      context.read<ProfileProvider>().clear();
                       context.read<AuthService>().signOut();
                     },
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
@@ -605,7 +632,11 @@ class _ThemeModeRow extends StatelessWidget {
               color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.dark_mode, color: colorScheme.primary, size: iconSize + 4),
+            child: Icon(
+              Icons.dark_mode,
+              color: colorScheme.primary,
+              size: iconSize + 4,
+            ),
           ),
           SizedBox(width: padding),
           Expanded(
@@ -670,7 +701,11 @@ class _ColorPaletteRow extends StatelessWidget {
               color: colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.palette, color: colorScheme.primary, size: circleSize),
+            child: Icon(
+              Icons.palette,
+              color: colorScheme.primary,
+              size: circleSize,
+            ),
           ),
           SizedBox(width: padding),
           Expanded(
