@@ -29,6 +29,49 @@ Guia operativa para integrar frontend con backend (v1).
 
 ---
 
+## Topics (fuente unica para frontend)
+
+Frontend NO debe definir topics hardcodeados.
+
+### `GET /topics`
+- Auth: requerido
+- Devuelve lista completa de topics.
+
+### `GET /topics/{id}`
+- Auth: requerido
+
+### `POST /topics`
+- Auth: requerido
+- Rol: `ADMIN`
+- Body:
+  - Requerido: `name`
+  - Opcionales: `slug`, `description`, `parentId`
+
+### `PUT /topics/{id}`
+- Auth: requerido
+- Rol: `ADMIN`
+- Body:
+  - Requerido: `name`
+  - Opcionales: `slug`, `description`, `parentId`
+
+### `DELETE /topics/{id}`
+- Auth: requerido
+- Rol: `ADMIN`
+
+Modelo de respuesta topic:
+```json
+{
+  "id": "uuid",
+  "name": "Cardiologia",
+  "slug": "cardiologia",
+  "description": "...",
+  "parentId": null,
+  "createdAt": "2026-03-28T12:00:00"
+}
+```
+
+---
+
 ## Study loop (core)
 
 ### `POST /study-sessions/start`
@@ -166,6 +209,8 @@ Ejemplo:
   - Requerido: `userId`
   - Opcional: `answers` (array de enteros)
 
+Nota de seguridad: por ahora `userId` se valida contra el usuario autenticado (o rol admin/teacher). En una fase posterior se puede eliminar del body y derivarlo 100% del JWT para endurecer contrato.
+
 ---
 
 ## Clinical Cases
@@ -198,6 +243,8 @@ Ejemplo:
 - Body:
   - Requeridos: `senderId`, `text`
   - Opcional: `type` (`TEXT`, `IMAGE`, `FILE`)
+
+Nota de seguridad: `senderId` tambien se valida contra el usuario autenticado (o admin). En una fase posterior se recomienda derivar siempre del JWT.
 
 ### `GET /chat/{roomId}/history`
 - Auth: requerido
