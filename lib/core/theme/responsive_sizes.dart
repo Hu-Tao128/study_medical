@@ -36,93 +36,43 @@ class ResponsiveFontSizes {
   const ResponsiveFontSizes._();
 
   static double caption(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 10,
-      tablet: 11,
-      desktop: 12,
-    );
+    return ResponsiveSizes.value(context, mobile: 10, tablet: 11, desktop: 12);
   }
 
   static double bodySmall(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 12,
-      tablet: 13,
-      desktop: 14,
-    );
+    return ResponsiveSizes.value(context, mobile: 12, tablet: 13, desktop: 14);
   }
 
   static double bodyMedium(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 14,
-      tablet: 15,
-      desktop: 16,
-    );
+    return ResponsiveSizes.value(context, mobile: 14, tablet: 15, desktop: 16);
   }
 
   static double labelSmall(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 11,
-      tablet: 12,
-      desktop: 13,
-    );
+    return ResponsiveSizes.value(context, mobile: 11, tablet: 12, desktop: 13);
   }
 
   static double labelMedium(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 12,
-      tablet: 13,
-      desktop: 14,
-    );
+    return ResponsiveSizes.value(context, mobile: 12, tablet: 13, desktop: 14);
   }
 
   static double titleSmall(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 14,
-      tablet: 15,
-      desktop: 16,
-    );
+    return ResponsiveSizes.value(context, mobile: 14, tablet: 15, desktop: 16);
   }
 
   static double titleMedium(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 16,
-      tablet: 18,
-      desktop: 20,
-    );
+    return ResponsiveSizes.value(context, mobile: 16, tablet: 18, desktop: 20);
   }
 
   static double titleLarge(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 20,
-      tablet: 22,
-      desktop: 24,
-    );
+    return ResponsiveSizes.value(context, mobile: 20, tablet: 22, desktop: 24);
   }
 
   static double headlineSmall(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 22,
-      tablet: 26,
-      desktop: 28,
-    );
+    return ResponsiveSizes.value(context, mobile: 22, tablet: 26, desktop: 28);
   }
 
   static double headlineMedium(BuildContext context) {
-    return ResponsiveSizes.value(
-      context,
-      mobile: 24,
-      tablet: 28,
-      desktop: 32,
-    );
+    return ResponsiveSizes.value(context, mobile: 24, tablet: 28, desktop: 32);
   }
 }
 
@@ -184,47 +134,65 @@ class ResponsiveIconSizes {
 
 extension ResponsiveTextStyle on TextTheme {
   TextStyle responsiveBodySmall(BuildContext context) {
-    return bodySmall?.copyWith(fontSize: ResponsiveFontSizes.bodySmall(context)) ??
+    return bodySmall?.copyWith(
+          fontSize: ResponsiveFontSizes.bodySmall(context),
+        ) ??
         TextStyle(fontSize: ResponsiveFontSizes.bodySmall(context));
   }
 
   TextStyle responsiveBodyMedium(BuildContext context) {
-    return bodyMedium?.copyWith(fontSize: ResponsiveFontSizes.bodyMedium(context)) ??
+    return bodyMedium?.copyWith(
+          fontSize: ResponsiveFontSizes.bodyMedium(context),
+        ) ??
         TextStyle(fontSize: ResponsiveFontSizes.bodyMedium(context));
   }
 
   TextStyle responsiveLabelSmall(BuildContext context) {
-    return labelSmall?.copyWith(fontSize: ResponsiveFontSizes.labelSmall(context)) ??
+    return labelSmall?.copyWith(
+          fontSize: ResponsiveFontSizes.labelSmall(context),
+        ) ??
         TextStyle(fontSize: ResponsiveFontSizes.labelSmall(context));
   }
 
   TextStyle responsiveLabelMedium(BuildContext context) {
-    return labelMedium?.copyWith(fontSize: ResponsiveFontSizes.labelMedium(context)) ??
+    return labelMedium?.copyWith(
+          fontSize: ResponsiveFontSizes.labelMedium(context),
+        ) ??
         TextStyle(fontSize: ResponsiveFontSizes.labelMedium(context));
   }
 
   TextStyle responsiveTitleSmall(BuildContext context) {
-    return titleSmall?.copyWith(fontSize: ResponsiveFontSizes.titleSmall(context)) ??
+    return titleSmall?.copyWith(
+          fontSize: ResponsiveFontSizes.titleSmall(context),
+        ) ??
         TextStyle(fontSize: ResponsiveFontSizes.titleSmall(context));
   }
 
   TextStyle responsiveTitleMedium(BuildContext context) {
-    return titleMedium?.copyWith(fontSize: ResponsiveFontSizes.titleMedium(context)) ??
+    return titleMedium?.copyWith(
+          fontSize: ResponsiveFontSizes.titleMedium(context),
+        ) ??
         TextStyle(fontSize: ResponsiveFontSizes.titleMedium(context));
   }
 
   TextStyle responsiveTitleLarge(BuildContext context) {
-    return titleLarge?.copyWith(fontSize: ResponsiveFontSizes.titleLarge(context)) ??
+    return titleLarge?.copyWith(
+          fontSize: ResponsiveFontSizes.titleLarge(context),
+        ) ??
         TextStyle(fontSize: ResponsiveFontSizes.titleLarge(context));
   }
 
   TextStyle responsiveHeadlineSmall(BuildContext context) {
-    return headlineSmall?.copyWith(fontSize: ResponsiveFontSizes.headlineSmall(context)) ??
+    return headlineSmall?.copyWith(
+          fontSize: ResponsiveFontSizes.headlineSmall(context),
+        ) ??
         TextStyle(fontSize: ResponsiveFontSizes.headlineSmall(context));
   }
 
   TextStyle responsiveHeadlineMedium(BuildContext context) {
-    return headlineMedium?.copyWith(fontSize: ResponsiveFontSizes.headlineMedium(context)) ??
+    return headlineMedium?.copyWith(
+          fontSize: ResponsiveFontSizes.headlineMedium(context),
+        ) ??
         TextStyle(fontSize: ResponsiveFontSizes.headlineMedium(context));
   }
 }
