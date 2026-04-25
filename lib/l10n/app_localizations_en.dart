@@ -396,4 +396,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get featureComingSoonMessage =>
       'This feature is under development and will be available soon.';
+
+  @override
+  String get serverConnectionError =>
+      'Could not connect to server. Check your internet connection.';
+
+  @override
+  String get offlineNoteWarning =>
+      'You\'re offline. Changes will sync when you\'re back online.';
 }

@@ -122,5 +122,7 @@
     "navAI": "AI",
     "navProfile": "Profile",
     "featureComingSoon": "Feature coming soon",
-    "featureComingSoonMessage": "This feature is under development and will be available soon."
+    "featureComingSoonMessage": "This feature is under development and will be available soon.",
+    "serverConnectionError": "Could not connect to server. Check your internet connection.",
+    "offlineNoteWarning": "You're offline. Changes will sync when you're back online."
 }

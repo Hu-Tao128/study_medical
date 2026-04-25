@@ -841,6 +841,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This feature is under development and will be available soon.'**
   String get featureComingSoonMessage;
+
+  /// No description provided for @serverConnectionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect to server. Check your internet connection.'**
+  String get serverConnectionError;
+
+  /// No description provided for @offlineNoteWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Changes will sync when you\'re back online.'**
+  String get offlineNoteWarning;
 }
 
 class _AppLocalizationsDelegate

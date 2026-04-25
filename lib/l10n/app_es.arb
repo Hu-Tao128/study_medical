@@ -122,5 +122,7 @@
     "navAI": "IA",
     "navProfile": "Perfil",
     "featureComingSoon": "Función próximamente",
-    "featureComingSoonMessage": "Esta función está en desarrollo y estará disponible pronto."
+    "featureComingSoonMessage": "Esta función está en desarrollo y estará disponible pronto.",
+    "serverConnectionError": "No se pudo conectar al servidor. Verifica tu conexión a internet.",
+    "offlineNoteWarning": "Estás sin conexión. Los cambios se sincronizarán cuando vuelvas a estar online."
 }
