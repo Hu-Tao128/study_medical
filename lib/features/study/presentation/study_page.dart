@@ -271,6 +271,15 @@ class _FlashcardsSection extends StatelessWidget {
             colorScheme: colorScheme,
             onTap: () => context.push('/study/flashcards/session'),
           ),
+          const SizedBox(height: 12),
+          _StudyCard(
+            icon: Icons.manage_search,
+            title: 'Terminologia medica',
+            subtitle: 'Buscar terminos en NIH y base de datos local',
+            color: Colors.teal,
+            colorScheme: colorScheme,
+            onTap: () => context.push('/study/terminology'),
+          ),
           const SizedBox(height: 24),
           Text(
             l10n.yourProgress,

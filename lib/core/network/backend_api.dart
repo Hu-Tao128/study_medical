@@ -4,6 +4,7 @@ import '../../features/groups/data/chat_message_model.dart';
 import '../../features/notes/data/note_model.dart';
 import '../../features/profile/data/user_profile_model.dart';
 import '../../features/quizzes/data/quiz_model.dart';
+import '../../features/study/data/medical_search_result.dart';
 import 'backend_api_client.dart';
 
 class BackendApi {
@@ -133,6 +134,28 @@ class BackendApi {
         .whereType<Map<String, dynamic>>()
         .map(ClinicalCaseModel.fromJson)
         .toList(growable: false);
+  }
+
+  Future<MedicalSearchResponse> searchMedicalTerminology({
+    required String query,
+    MedicalResultSource? source,
+    int? limit,
+    int? page,
+  }) async {
+    final response = await _client.get<Map<String, dynamic>>(
+      '/api/v1/search',
+      queryParameters: {
+        'q': query,
+        if (source != null) 'source': source.name,
+        if (limit != null) 'limit': limit,
+        if (page != null) 'page': page,
+      },
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(message: 'Busqueda vacia');
+    }
+    return MedicalSearchResponse.fromJson(data);
   }
 
   Future<NoteModel> createNote(CreateNoteRequest request) async {

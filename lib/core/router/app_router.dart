@@ -6,6 +6,7 @@ import '../../features/home/presentation/main_shell.dart';
 import '../../features/home/presentation/home_page.dart';
 import '../../features/home/presentation/model_3d_page.dart';
 import '../../features/study/presentation/study_page.dart';
+import '../../features/study/presentation/terminology_search_page.dart';
 import '../../features/quizzes/presentation/quizzes_page.dart';
 import '../../features/cases/presentation/cases_page.dart';
 import '../../features/flashcard/presentation/flashcard_session_page.dart';
@@ -70,6 +71,10 @@ GoRouter appRouter(AuthService authService) {
       GoRoute(
         path: '/study/cases',
         builder: (context, state) => const CasesPage(),
+      ),
+      GoRoute(
+        path: '/study/terminology',
+        builder: (context, state) => const TerminologySearchPage(),
       ),
       GoRoute(
         path: '/study/flashcards/result',
