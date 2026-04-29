@@ -5,6 +5,7 @@ import '../../features/notes/data/note_model.dart';
 import '../../features/profile/data/user_profile_model.dart';
 import '../../features/quizzes/data/quiz_model.dart';
 import '../../features/study/data/medical_search_result.dart';
+import 'package:dio/dio.dart';
 import 'backend_api_client.dart';
 
 class AuthResponse {
@@ -35,11 +36,7 @@ class BackendApi {
   Future<AuthResponse> syncSession(String firebaseToken) async {
     final response = await _client.post<Map<String, dynamic>>(
       '/api/v1/auth/sync-session',
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $firebaseToken',
-        },
-      ),
+      options: Options(headers: {'Authorization': 'Bearer $firebaseToken'}),
     );
     final data = response.data;
     if (data == null) {
