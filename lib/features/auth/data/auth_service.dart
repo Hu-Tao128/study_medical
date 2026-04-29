@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:study_medical/core/network/backend_api.dart';
+import 'token_repository.dart';
 
 class AuthResult {
   final bool success;
@@ -49,6 +50,7 @@ class AuthLogger {
 
 class AuthService extends ChangeNotifier {
   final BackendApi _backendApi;
+  final TokenRepository _tokenRepository;
   final firebase_auth.FirebaseAuth _firebaseAuth =
       firebase_auth.FirebaseAuth.instance;
 
@@ -68,12 +70,12 @@ class AuthService extends ChangeNotifier {
   int get failedAttempts => _failedAttempts;
   bool get isInitialized => _isInitialized;
 
-  AuthService(this._backendApi) {
+  AuthService(this._backendApi, this._tokenRepository) {
     _initAuthListener();
   }
 
   Future<void> _initAuthListener() async {
-    _firebaseAuth.authStateChanges().listen((firebaseUser) {
+    _firebaseAuth.authStateChanges().listen((firebaseUser) async {
       developer.log(
         'Firebase auth state changed: ${firebaseUser != null}',
         name: 'FIREBASE_AUTH',
@@ -82,11 +84,14 @@ class AuthService extends ChangeNotifier {
       if (firebaseUser != null) {
         _user = AuthUser(id: firebaseUser.uid, email: firebaseUser.email ?? '');
         developer.log('User logged in: ${_user?.email}', name: 'FIREBASE_AUTH');
-        _syncSessionWithBackend().catchError((e) {
+        try {
+          await _syncSessionWithBackend();
+        } catch (e) {
           developer.log('Initial sync failed: $e', name: 'AUTH');
-        });
+        }
       } else {
         _user = null;
+        await _tokenRepository.clearTokens();
         developer.log('User logged out', name: 'FIREBASE_AUTH');
       }
 
@@ -279,7 +284,21 @@ class AuthService extends ChangeNotifier {
 
   Future<void> _syncSessionWithBackend() async {
     try {
-      await _backendApi.syncSession();
+      final firebaseUser = _firebaseAuth.currentUser;
+      if (firebaseUser == null) return;
+
+      final firebaseToken = await firebaseUser.getIdToken();
+      if (firebaseToken == null) {
+        throw Exception('Could not get Firebase token');
+      }
+
+      final authResponse = await _backendApi.syncSession(firebaseToken);
+      
+      await _tokenRepository.saveTokens(
+        accessToken: authResponse.accessToken,
+        refreshToken: authResponse.refreshToken,
+      );
+
       developer.log('✅ Sesion sincronizada con backend', name: 'AUTH');
     } catch (e, stack) {
       developer.log(
@@ -339,6 +358,7 @@ class AuthService extends ChangeNotifier {
     }
 
     await _firebaseAuth.signOut();
+    await _tokenRepository.clearTokens();
 
     _user = null;
     notifyListeners();
@@ -346,11 +366,7 @@ class AuthService extends ChangeNotifier {
 
   Future<String?> getToken() async {
     try {
-      final firebaseUser = _firebaseAuth.currentUser;
-      if (firebaseUser != null) {
-        return await firebaseUser.getIdToken();
-      }
-      return null;
+      return await _tokenRepository.getAccessToken();
     } catch (e) {
       return null;
     }

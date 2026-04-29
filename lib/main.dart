@@ -9,6 +9,7 @@ import 'app.dart';
 import 'data/theme/local_theme_repository.dart';
 import 'core/network/backend_api.dart';
 import 'features/auth/data/auth_service.dart';
+import 'features/auth/data/token_repository.dart';
 import 'features/flashcard/data/flashcard_model.dart';
 import 'features/flashcard/data/flashcard_repository.dart';
 import 'features/flashcard/presentation/providers/flashcard_provider.dart';
@@ -54,13 +55,24 @@ void main() async {
   }
 
   final themeRepo = LocalThemeRepository();
-  final backendApi = BackendApi(
+  final tokenRepository = TokenRepository();
+  late final BackendApi backendApi;
+
+  backendApi = BackendApi(
     tokenProvider: () async {
-      final user = firebase_auth.FirebaseAuth.instance.currentUser;
-      debugPrint('Firebase user: ${user?.uid}');
-      final token = await user?.getIdToken();
-      debugPrint('Token length: ${token?.length ?? 0}');
-      return token;
+      return await tokenRepository.getAccessToken();
+    },
+    refreshTokens: () async {
+      final refreshToken = await tokenRepository.getRefreshToken();
+      if (refreshToken == null) {
+        throw Exception('No refresh token available');
+      }
+
+      final authResponse = await backendApi.refreshToken(refreshToken);
+      await tokenRepository.saveTokens(
+        accessToken: authResponse.accessToken,
+        refreshToken: authResponse.refreshToken,
+      );
     },
   );
 
@@ -94,7 +106,10 @@ void main() async {
         ChangeNotifierProvider.value(value: localeProvider),
         ChangeNotifierProvider.value(value: profileProvider),
         Provider<BackendApi>.value(value: backendApi),
-        ChangeNotifierProvider(create: (_) => AuthService(backendApi)),
+        Provider<TokenRepository>.value(value: tokenRepository),
+        ChangeNotifierProvider(
+          create: (_) => AuthService(backendApi, tokenRepository),
+        ),
         ChangeNotifierProvider(
           create: (context) => FlashcardProvider(
             repository: FlashcardRepository(),

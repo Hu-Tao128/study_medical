@@ -7,15 +7,39 @@ import '../../features/quizzes/data/quiz_model.dart';
 import '../../features/study/data/medical_search_result.dart';
 import 'backend_api_client.dart';
 
+class AuthResponse {
+  final String accessToken;
+  final String refreshToken;
+
+  AuthResponse({required this.accessToken, required this.refreshToken});
+
+  factory AuthResponse.fromJson(Map<String, dynamic> json) {
+    return AuthResponse(
+      accessToken: json['accessToken'] as String,
+      refreshToken: json['refreshToken'] as String,
+    );
+  }
+}
+
 class BackendApi {
-  BackendApi({required Future<String?> Function() tokenProvider})
-    : _client = BackendApiClient(tokenProvider: tokenProvider);
+  BackendApi({
+    required Future<String?> Function() tokenProvider,
+    Future<void> Function()? refreshTokens,
+  }) : _client = BackendApiClient(
+         tokenProvider: tokenProvider,
+         refreshTokens: refreshTokens,
+       );
 
   final BackendApiClient _client;
 
-  Future<UserProfile> syncSession() async {
+  Future<AuthResponse> syncSession(String firebaseToken) async {
     final response = await _client.post<Map<String, dynamic>>(
       '/api/v1/auth/sync-session',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $firebaseToken',
+        },
+      ),
     );
     final data = response.data;
     if (data == null) {
@@ -23,7 +47,19 @@ class BackendApi {
         message: 'Respuesta vacía al sincronizar sesión',
       );
     }
-    return UserProfile.fromJson(data);
+    return AuthResponse.fromJson(data);
+  }
+
+  Future<AuthResponse> refreshToken(String refreshToken) async {
+    final response = await _client.post<Map<String, dynamic>>(
+      '/api/v1/auth/refresh',
+      data: {'refreshToken': refreshToken},
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(message: 'Error al refrescar token');
+    }
+    return AuthResponse.fromJson(data);
   }
 
   Future<UserProfile> getProfile() async {
@@ -287,10 +323,7 @@ class BackendApi {
   }
 
   Future<bool> health() async {
-    final response = await _client.get<Map<String, dynamic>>(
-      '/api/v1/health',
-      requiresAuth: false,
-    );
+    final response = await _client.get<Map<String, dynamic>>('/api/v1/health');
     final data = response.data;
     if (data == null) {
       return false;

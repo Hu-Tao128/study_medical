@@ -12,9 +12,11 @@ String get _defaultBaseUrl {
 class BackendApiClient {
   BackendApiClient({
     required Future<String?> Function() tokenProvider,
+    Future<void> Function()? refreshTokens,
     Dio? dio,
     String? baseUrl,
   }) : _tokenProvider = tokenProvider,
+       _refreshTokens = refreshTokens,
        _dio =
            dio ??
            Dio(
@@ -26,10 +28,58 @@ class BackendApiClient {
                contentType: Headers.jsonContentType,
                responseType: ResponseType.json,
              ),
-           );
+           ) {
+    _setupInterceptors();
+  }
 
   final Dio _dio;
   final Future<String?> Function() _tokenProvider;
+  final Future<void> Function()? _refreshTokens;
+
+  void _setupInterceptors() {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // Skip auth for public endpoints
+          final isPublicEndpoint = _isPublicEndpoint(options.path);
+
+          if (!isPublicEndpoint && !options.headers.containsKey('Authorization')) {
+            final token = await _tokenProvider();
+            if (token != null && token.isNotEmpty) {
+              options.headers['Authorization'] = 'Bearer $token';
+            }
+          }
+
+          return handler.next(options);
+        },
+        onError: (error, handler) async {
+          // Handle 401 errors globally
+          final isRefreshEndpoint = error.requestOptions.path.contains('api/v1/auth/refresh');
+          
+          if (error.response?.statusCode == 401 && _refreshTokens != null && !isRefreshEndpoint) {
+            try {
+              // Attempt to refresh tokens
+              await _refreshTokens!();
+              
+              // Retry the original request
+              final options = error.requestOptions;
+              final token = await _tokenProvider();
+              if (token != null) {
+                options.headers['Authorization'] = 'Bearer $token';
+              }
+              
+              final response = await _dio.fetch(options);
+              return handler.resolve(response);
+            } catch (e) {
+              // Refresh failed, proceed with error
+              return handler.next(error);
+            }
+          }
+          return handler.next(error);
+        },
+      ),
+    );
+  }
 
   static String _normalizeBaseUrl(String rawBaseUrl) {
     final trimmed = rawBaseUrl.trim();
@@ -39,18 +89,34 @@ class BackendApiClient {
     return 'http://$trimmed';
   }
 
+  bool _isPublicEndpoint(String path) {
+    // Remove leading slash for consistent comparison
+    final normalizedPath = path.startsWith('/') ? path.substring(1) : path;
+
+    // Public endpoints that don't require authentication
+    final publicEndpoints = {
+      '', // Root endpoint /
+      'health',
+      'keep-alive',
+      'api/v1/auth/dev-login', // Dev only endpoint
+      'api/v1/auth/sync-session', // Needs Firebase token, not Backend JWT
+      'api/v1/auth/refresh',
+      'api/v1/topics',
+    };
+
+    return publicEndpoints.contains(normalizedPath);
+  }
+
   Future<Response<T>> get<T>(
     String path, {
     Map<String, dynamic>? queryParameters,
-    bool requiresAuth = true,
     Options? options,
   }) async {
     try {
-      final requestOptions = await _prepareOptions(options, requiresAuth);
       return await _dio.get<T>(
         path,
         queryParameters: queryParameters,
-        options: requestOptions,
+        options: options,
       );
     } on DioException catch (error) {
       throw BackendApiException.fromDio(error);
@@ -60,12 +126,10 @@ class BackendApiClient {
   Future<Response<T>> post<T>(
     String path, {
     Object? data,
-    bool requiresAuth = true,
     Options? options,
   }) async {
     try {
-      final requestOptions = await _prepareOptions(options, requiresAuth);
-      return await _dio.post<T>(path, data: data, options: requestOptions);
+      return await _dio.post<T>(path, data: data, options: options);
     } on DioException catch (error) {
       throw BackendApiException.fromDio(error);
     }
@@ -74,12 +138,10 @@ class BackendApiClient {
   Future<Response<T>> patch<T>(
     String path, {
     Object? data,
-    bool requiresAuth = true,
     Options? options,
   }) async {
     try {
-      final requestOptions = await _prepareOptions(options, requiresAuth);
-      return await _dio.patch<T>(path, data: data, options: requestOptions);
+      return await _dio.patch<T>(path, data: data, options: options);
     } on DioException catch (error) {
       throw BackendApiException.fromDio(error);
     }
@@ -88,12 +150,10 @@ class BackendApiClient {
   Future<Response<T>> put<T>(
     String path, {
     Object? data,
-    bool requiresAuth = true,
     Options? options,
   }) async {
     try {
-      final requestOptions = await _prepareOptions(options, requiresAuth);
-      return await _dio.put<T>(path, data: data, options: requestOptions);
+      return await _dio.put<T>(path, data: data, options: options);
     } on DioException catch (error) {
       throw BackendApiException.fromDio(error);
     }
@@ -102,30 +162,13 @@ class BackendApiClient {
   Future<Response<T>> delete<T>(
     String path, {
     Object? data,
-    bool requiresAuth = true,
     Options? options,
   }) async {
     try {
-      final requestOptions = await _prepareOptions(options, requiresAuth);
-      return await _dio.delete<T>(path, data: data, options: requestOptions);
+      return await _dio.delete<T>(path, data: data, options: options);
     } on DioException catch (error) {
       throw BackendApiException.fromDio(error);
     }
-  }
-
-  Future<Options> _prepareOptions(Options? options, bool requiresAuth) async {
-    final merged = options?.copyWith() ?? Options();
-    merged.headers = Map<String, dynamic>.from(merged.headers ?? {});
-
-    if (requiresAuth) {
-      final token = await _tokenProvider();
-      if (token == null || token.isEmpty) {
-        throw const AuthTokenMissingException();
-      }
-      merged.headers!['Authorization'] = 'Bearer $token';
-    }
-
-    return merged;
   }
 }
 
