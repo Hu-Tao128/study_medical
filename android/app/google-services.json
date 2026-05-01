@@ -12,7 +12,44 @@
           "package_name": "com.example.study_medical"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "737646867874-29vh6o3ooqti86cnnqieqic81cs4a263.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.study_medical",
+            "certificate_hash": "fe5fa707615b3ad4ba49c48d42f90c2bbae5a09a"
+          }
+        },
+        {
+          "client_id": "737646867874-9litc4pc3utn4clocbrvo5to6aml0par.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.study_medical",
+            "certificate_hash": "2cb5e16c0b14cd56752b95af52f66c9fe212a0ca"
+          }
+        },
+        {
+          "client_id": "737646867874-hsins42isn5s4r4qhq4d1d8hcbs7prua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.study_medical",
+            "certificate_hash": "7c0563da48f1d0f26342e45be76d82823ab93ff0"
+          }
+        },
+        {
+          "client_id": "737646867874-to3uirvnl1q6tib5phbp1kkcujk8ji1s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.study_medical",
+            "certificate_hash": "d035fa1d7c24ba7dd32087973aa6f87755854344"
+          }
+        },
+        {
+          "client_id": "737646867874-hcl9r0pm51cdvs4j1d5rsotjr9fmlgat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBSRJBBbqfrhjF8vLWhrokCqrkeniDgvnM"
@@ -20,7 +57,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "737646867874-hcl9r0pm51cdvs4j1d5rsotjr9fmlgat.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "737646867874-hfbatpooubnlso27cfus583du1kpaie6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.studyMedical"
+              }
+            }
+          ]
         }
       }
     }
