@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import '../../features/cases/data/clinical_case_model.dart';
 import '../../features/flashcard/data/flashcard_model.dart';
 import '../../features/groups/data/chat_message_model.dart';
@@ -15,9 +17,18 @@ class AuthResponse {
   AuthResponse({required this.accessToken, required this.refreshToken});
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
+    final accessToken = json['accessToken'];
+    final refreshToken = json['refreshToken'];
+
+    if (accessToken == null || refreshToken == null) {
+      throw FormatException(
+        'AuthResponse: accessToken o refreshToken son null. JSON: $json',
+      );
+    }
+
     return AuthResponse(
-      accessToken: json['accessToken'] as String,
-      refreshToken: json['refreshToken'] as String,
+      accessToken: accessToken as String,
+      refreshToken: refreshToken as String,
     );
   }
 }
@@ -34,14 +45,27 @@ class BackendApi {
   final BackendApiClient _client;
 
   Future<AuthResponse> syncSession(String firebaseToken) async {
+    developer.log(
+      'syncSession: sending request to backend',
+      name: 'BACKEND_API',
+    );
     final response = await _client.post<Map<String, dynamic>>(
       '/api/v1/auth/sync-session',
       options: Options(headers: {'Authorization': 'Bearer $firebaseToken'}),
     );
     final data = response.data;
+    developer.log(
+      'syncSession: response received. Data type: ${data.runtimeType}',
+      name: 'BACKEND_API',
+    );
     if (data == null) {
       throw const BackendApiException(
         message: 'Respuesta vacía al sincronizar sesión',
+      );
+    }
+    if (data is! Map<String, dynamic>) {
+      throw FormatException(
+        'syncSession: Expected Map<String, dynamic> but got ${data.runtimeType}. Data: $data',
       );
     }
     return AuthResponse.fromJson(data);

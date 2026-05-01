@@ -285,15 +285,29 @@ class AuthService extends ChangeNotifier {
   Future<void> _syncSessionWithBackend() async {
     try {
       final firebaseUser = _firebaseAuth.currentUser;
-      if (firebaseUser == null) return;
+      if (firebaseUser == null) {
+        developer.log('No Firebase user found for sync', name: 'AUTH');
+        return;
+      }
 
+      developer.log('Getting Firebase token...', name: 'AUTH');
       final firebaseToken = await firebaseUser.getIdToken();
+      developer.log(
+        'Firebase token obtained: ${firebaseToken != null ? 'yes (${firebaseToken.length} chars)' : 'null'}',
+        name: 'AUTH',
+      );
+
       if (firebaseToken == null) {
         throw Exception('Could not get Firebase token');
       }
 
+      developer.log('Calling backend sync-session...', name: 'AUTH');
       final authResponse = await _backendApi.syncSession(firebaseToken);
-      
+      developer.log(
+        'Backend sync successful. Access token length: ${authResponse.accessToken.length}',
+        name: 'AUTH',
+      );
+
       await _tokenRepository.saveTokens(
         accessToken: authResponse.accessToken,
         refreshToken: authResponse.refreshToken,
@@ -316,7 +330,6 @@ class AuthService extends ChangeNotifier {
         scopes: ['email', 'profile'],
       );
 
-      // Forzar selección de cuenta cerrando sesión anterior
       await googleSignIn.signOut();
 
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
@@ -326,9 +339,26 @@ class AuthService extends ChangeNotifier {
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
 
+      final String? idToken = googleAuth.idToken;
+      final String? accessToken = googleAuth.accessToken;
+
+      developer.log(
+        'Google auth: idToken=${idToken != null}, accessToken=${accessToken != null}',
+        name: 'FIREBASE_AUTH',
+      );
+
+      if (idToken == null) {
+        throw Exception(
+          'No se pudo obtener el idToken de Google.\n'
+          'Verifica: 1) Google Sign-In habilitado en Firebase Console → Authentication\n'
+          '2) SHA-1 de la app agregado en Firebase Console → Project Settings\n'
+          '3) google-services.json actualizado descargado de Firebase.',
+        );
+      }
+
       final credential = firebase_auth.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
+        idToken: idToken,
       );
 
       final result = await _firebaseAuth.signInWithCredential(credential);
