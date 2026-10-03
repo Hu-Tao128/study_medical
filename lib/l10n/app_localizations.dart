@@ -853,6 +853,378 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You\'re offline. Changes will sync when you\'re back online.'**
   String get offlineNoteWarning;
+
+  /// No description provided for @answerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer'**
+  String get answerLabel;
+
+  /// No description provided for @studySetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Study Session'**
+  String get studySetupTitle;
+
+  /// No description provided for @studySetupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a topic and start reviewing.'**
+  String get studySetupSubtitle;
+
+  /// No description provided for @selectTopicLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic'**
+  String get selectTopicLabel;
+
+  /// No description provided for @cardsPerSessionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards per session'**
+  String get cardsPerSessionLabel;
+
+  /// No description provided for @cardsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} cards'**
+  String cardsCount(String count);
+
+  /// No description provided for @studyModeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mode'**
+  String get studyModeLabel;
+
+  /// No description provided for @modeFlashcards.
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcards'**
+  String get modeFlashcards;
+
+  /// No description provided for @modeQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get modeQuiz;
+
+  /// No description provided for @modeCases.
+  ///
+  /// In en, this message translates to:
+  /// **'Clinical cases'**
+  String get modeCases;
+
+  /// No description provided for @startStudyButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get startStudyButton;
+
+  /// No description provided for @noTopicsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No topics available'**
+  String get noTopicsAvailable;
+
+  /// No description provided for @noFlashcardsInTopic.
+  ///
+  /// In en, this message translates to:
+  /// **'This topic has no flashcards yet'**
+  String get noFlashcardsInTopic;
+
+  /// No description provided for @sessionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {total}'**
+  String sessionProgress(String current, String total);
+
+  /// No description provided for @tapToReveal.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to reveal the answer'**
+  String get tapToReveal;
+
+  /// No description provided for @rateYourRecall.
+  ///
+  /// In en, this message translates to:
+  /// **'How well did you recall it?'**
+  String get rateYourRecall;
+
+  /// No description provided for @ratingAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Again'**
+  String get ratingAgain;
+
+  /// No description provided for @ratingHard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get ratingHard;
+
+  /// No description provided for @ratingGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get ratingGood;
+
+  /// No description provided for @ratingEasy.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get ratingEasy;
+
+  /// No description provided for @ratingPerfect.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect'**
+  String get ratingPerfect;
+
+  /// No description provided for @accuracyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy'**
+  String get accuracyLabel;
+
+  /// No description provided for @studyAgainButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Study again'**
+  String get studyAgainButton;
+
+  /// No description provided for @backToHomeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to home'**
+  String get backToHomeButton;
+
+  /// No description provided for @sessionSubmitFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the session'**
+  String get sessionSubmitFailed;
+
+  /// No description provided for @answerUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer not available'**
+  String get answerUnavailable;
+
+  /// No description provided for @progressByTopicTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress by topic'**
+  String get progressByTopicTitle;
+
+  /// No description provided for @progressEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a study session to see your progress'**
+  String get progressEmpty;
+
+  /// No description provided for @manageFlashcards.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage flashcards'**
+  String get manageFlashcards;
+
+  /// No description provided for @newFlashcard.
+  ///
+  /// In en, this message translates to:
+  /// **'New flashcard'**
+  String get newFlashcard;
+
+  /// No description provided for @editFlashcard.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit flashcard'**
+  String get editFlashcard;
+
+  /// No description provided for @questionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get questionLabel;
+
+  /// No description provided for @difficultyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulty'**
+  String get difficultyLabel;
+
+  /// No description provided for @deleteFlashcardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete flashcard'**
+  String get deleteFlashcardTitle;
+
+  /// No description provided for @deleteFlashcardMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get deleteFlashcardMessage;
+
+  /// No description provided for @deleteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteLabel;
+
+  /// No description provided for @flashcardSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcard saved'**
+  String get flashcardSaved;
+
+  /// No description provided for @flashcardDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcard deleted'**
+  String get flashcardDeleted;
+
+  /// No description provided for @noFlashcardsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No flashcards in this topic yet'**
+  String get noFlashcardsYet;
+
+  /// No description provided for @createFirstFlashcard.
+  ///
+  /// In en, this message translates to:
+  /// **'Create the first one'**
+  String get createFirstFlashcard;
+
+  /// No description provided for @studyTopicButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Study this topic'**
+  String get studyTopicButton;
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get fieldRequired;
+
+  /// No description provided for @visibilityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Visibility'**
+  String get visibilityLabel;
+
+  /// No description provided for @visibilityPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Only me'**
+  String get visibilityPrivate;
+
+  /// No description provided for @visibilityPublic.
+  ///
+  /// In en, this message translates to:
+  /// **'Public'**
+  String get visibilityPublic;
+
+  /// No description provided for @visibilityGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'My group (coming soon)'**
+  String get visibilityGroup;
+
+  /// No description provided for @myDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'My documents'**
+  String get myDocuments;
+
+  /// No description provided for @uploadPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload PDF'**
+  String get uploadPdf;
+
+  /// No description provided for @uploadPdfHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a PDF to ask questions only about your file.'**
+  String get uploadPdfHint;
+
+  /// No description provided for @noDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents yet'**
+  String get noDocuments;
+
+  /// No description provided for @documentReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get documentReady;
+
+  /// No description provided for @documentProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get documentProcessing;
+
+  /// No description provided for @documentPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get documentPending;
+
+  /// No description provided for @documentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not process'**
+  String get documentFailed;
+
+  /// No description provided for @documentUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Document uploaded'**
+  String get documentUploaded;
+
+  /// No description provided for @documentUploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not upload the document'**
+  String get documentUploadFailed;
+
+  /// No description provided for @documentReadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read the file'**
+  String get documentReadFailed;
+
+  /// No description provided for @aiNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'AI is not configured on the server'**
+  String get aiNotConfigured;
+
+  /// No description provided for @askAboutDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask this document. Answers cite the page.'**
+  String get askAboutDocument;
+
+  /// No description provided for @askHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type your question...'**
+  String get askHint;
+
+  /// No description provided for @citations.
+  ///
+  /// In en, this message translates to:
+  /// **'Citations'**
+  String get citations;
+
+  /// No description provided for @pageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page}'**
+  String pageLabel(String page);
 }
 
 class _AppLocalizationsDelegate

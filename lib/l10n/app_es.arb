@@ -124,5 +124,91 @@
     "featureComingSoon": "Función próximamente",
     "featureComingSoonMessage": "Esta función está en desarrollo y estará disponible pronto.",
     "serverConnectionError": "No se pudo conectar al servidor. Verifica tu conexión a internet.",
-    "offlineNoteWarning": "Estás sin conexión. Los cambios se sincronizarán cuando vuelvas a estar online."
+    "offlineNoteWarning": "Estás sin conexión. Los cambios se sincronizarán cuando vuelvas a estar online.",
+    "answerLabel": "Respuesta",
+    "studySetupTitle": "Sesión de estudio",
+    "studySetupSubtitle": "Elige un tema y comienza a repasar.",
+    "selectTopicLabel": "Tema",
+    "cardsPerSessionLabel": "Tarjetas por sesión",
+    "cardsCount": "{count} tarjetas",
+    "@cardsCount": {
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "studyModeLabel": "Modo",
+    "modeFlashcards": "Tarjetas",
+    "modeQuiz": "Cuestionario",
+    "modeCases": "Casos clínicos",
+    "startStudyButton": "Comenzar",
+    "noTopicsAvailable": "No hay temas disponibles",
+    "noFlashcardsInTopic": "Este tema todavía no tiene tarjetas",
+    "sessionProgress": "{current} de {total}",
+    "@sessionProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "tapToReveal": "Toca para ver la respuesta",
+    "rateYourRecall": "¿Qué tan bien la recordaste?",
+    "ratingAgain": "Otra vez",
+    "ratingHard": "Difícil",
+    "ratingGood": "Bien",
+    "ratingEasy": "Fácil",
+    "ratingPerfect": "Perfecto",
+    "accuracyLabel": "Precisión",
+    "studyAgainButton": "Estudiar de nuevo",
+    "backToHomeButton": "Volver al inicio",
+    "sessionSubmitFailed": "No se pudo guardar la sesión",
+    "answerUnavailable": "Respuesta no disponible",
+    "progressByTopicTitle": "Progreso por tema",
+    "progressEmpty": "Completa una sesión de estudio para ver tu progreso",
+    "manageFlashcards": "Gestionar tarjetas",
+    "newFlashcard": "Nueva tarjeta",
+    "editFlashcard": "Editar tarjeta",
+    "questionLabel": "Pregunta",
+    "difficultyLabel": "Dificultad",
+    "deleteFlashcardTitle": "Eliminar tarjeta",
+    "deleteFlashcardMessage": "Esta acción no se puede deshacer.",
+    "deleteLabel": "Eliminar",
+    "flashcardSaved": "Tarjeta guardada",
+    "flashcardDeleted": "Tarjeta eliminada",
+    "noFlashcardsYet": "Aún no hay tarjetas en este tema",
+    "createFirstFlashcard": "Crear la primera",
+    "studyTopicButton": "Estudiar este tema",
+    "fieldRequired": "Este campo es obligatorio",
+    "visibilityLabel": "Visibilidad",
+    "visibilityPrivate": "Solo yo",
+    "visibilityPublic": "Público",
+    "visibilityGroup": "Mi grupo (próximamente)",
+    "myDocuments": "Mis documentos",
+    "uploadPdf": "Subir PDF",
+    "uploadPdfHint": "Sube un PDF para poder preguntarle solo sobre tu archivo.",
+    "noDocuments": "Aún no tienes documentos",
+    "documentReady": "Listo",
+    "documentProcessing": "Procesando...",
+    "documentPending": "Pendiente",
+    "documentFailed": "No se pudo procesar",
+    "documentUploaded": "Documento subido",
+    "documentUploadFailed": "No se pudo subir el documento",
+    "documentReadFailed": "No se pudo leer el archivo",
+    "aiNotConfigured": "La IA no está configurada en el servidor",
+    "askAboutDocument": "Pregúntale a este documento. Las respuestas citan la página.",
+    "askHint": "Escribe tu pregunta...",
+    "citations": "Citas",
+    "pageLabel": "Página {page}",
+    "@pageLabel": {
+        "placeholders": {
+            "page": {
+                "type": "String"
+            }
+        }
+    }
 }

@@ -406,4 +406,199 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get offlineNoteWarning =>
       'Estás sin conexión. Los cambios se sincronizarán cuando vuelvas a estar online.';
+
+  @override
+  String get answerLabel => 'Respuesta';
+
+  @override
+  String get studySetupTitle => 'Sesión de estudio';
+
+  @override
+  String get studySetupSubtitle => 'Elige un tema y comienza a repasar.';
+
+  @override
+  String get selectTopicLabel => 'Tema';
+
+  @override
+  String get cardsPerSessionLabel => 'Tarjetas por sesión';
+
+  @override
+  String cardsCount(String count) {
+    return '$count tarjetas';
+  }
+
+  @override
+  String get studyModeLabel => 'Modo';
+
+  @override
+  String get modeFlashcards => 'Tarjetas';
+
+  @override
+  String get modeQuiz => 'Cuestionario';
+
+  @override
+  String get modeCases => 'Casos clínicos';
+
+  @override
+  String get startStudyButton => 'Comenzar';
+
+  @override
+  String get noTopicsAvailable => 'No hay temas disponibles';
+
+  @override
+  String get noFlashcardsInTopic => 'Este tema todavía no tiene tarjetas';
+
+  @override
+  String sessionProgress(String current, String total) {
+    return '$current de $total';
+  }
+
+  @override
+  String get tapToReveal => 'Toca para ver la respuesta';
+
+  @override
+  String get rateYourRecall => '¿Qué tan bien la recordaste?';
+
+  @override
+  String get ratingAgain => 'Otra vez';
+
+  @override
+  String get ratingHard => 'Difícil';
+
+  @override
+  String get ratingGood => 'Bien';
+
+  @override
+  String get ratingEasy => 'Fácil';
+
+  @override
+  String get ratingPerfect => 'Perfecto';
+
+  @override
+  String get accuracyLabel => 'Precisión';
+
+  @override
+  String get studyAgainButton => 'Estudiar de nuevo';
+
+  @override
+  String get backToHomeButton => 'Volver al inicio';
+
+  @override
+  String get sessionSubmitFailed => 'No se pudo guardar la sesión';
+
+  @override
+  String get answerUnavailable => 'Respuesta no disponible';
+
+  @override
+  String get progressByTopicTitle => 'Progreso por tema';
+
+  @override
+  String get progressEmpty =>
+      'Completa una sesión de estudio para ver tu progreso';
+
+  @override
+  String get manageFlashcards => 'Gestionar tarjetas';
+
+  @override
+  String get newFlashcard => 'Nueva tarjeta';
+
+  @override
+  String get editFlashcard => 'Editar tarjeta';
+
+  @override
+  String get questionLabel => 'Pregunta';
+
+  @override
+  String get difficultyLabel => 'Dificultad';
+
+  @override
+  String get deleteFlashcardTitle => 'Eliminar tarjeta';
+
+  @override
+  String get deleteFlashcardMessage => 'Esta acción no se puede deshacer.';
+
+  @override
+  String get deleteLabel => 'Eliminar';
+
+  @override
+  String get flashcardSaved => 'Tarjeta guardada';
+
+  @override
+  String get flashcardDeleted => 'Tarjeta eliminada';
+
+  @override
+  String get noFlashcardsYet => 'Aún no hay tarjetas en este tema';
+
+  @override
+  String get createFirstFlashcard => 'Crear la primera';
+
+  @override
+  String get studyTopicButton => 'Estudiar este tema';
+
+  @override
+  String get fieldRequired => 'Este campo es obligatorio';
+
+  @override
+  String get visibilityLabel => 'Visibilidad';
+
+  @override
+  String get visibilityPrivate => 'Solo yo';
+
+  @override
+  String get visibilityPublic => 'Público';
+
+  @override
+  String get visibilityGroup => 'Mi grupo (próximamente)';
+
+  @override
+  String get myDocuments => 'Mis documentos';
+
+  @override
+  String get uploadPdf => 'Subir PDF';
+
+  @override
+  String get uploadPdfHint =>
+      'Sube un PDF para poder preguntarle solo sobre tu archivo.';
+
+  @override
+  String get noDocuments => 'Aún no tienes documentos';
+
+  @override
+  String get documentReady => 'Listo';
+
+  @override
+  String get documentProcessing => 'Procesando...';
+
+  @override
+  String get documentPending => 'Pendiente';
+
+  @override
+  String get documentFailed => 'No se pudo procesar';
+
+  @override
+  String get documentUploaded => 'Documento subido';
+
+  @override
+  String get documentUploadFailed => 'No se pudo subir el documento';
+
+  @override
+  String get documentReadFailed => 'No se pudo leer el archivo';
+
+  @override
+  String get aiNotConfigured => 'La IA no está configurada en el servidor';
+
+  @override
+  String get askAboutDocument =>
+      'Pregúntale a este documento. Las respuestas citan la página.';
+
+  @override
+  String get askHint => 'Escribe tu pregunta...';
+
+  @override
+  String get citations => 'Citas';
+
+  @override
+  String pageLabel(String page) {
+    return 'Página $page';
+  }
 }

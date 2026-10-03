@@ -9,13 +9,18 @@ import '../../features/study/presentation/study_page.dart';
 import '../../features/study/presentation/terminology_search_page.dart';
 import '../../features/quizzes/presentation/quizzes_page.dart';
 import '../../features/cases/presentation/cases_page.dart';
+import '../../features/flashcard/data/study_session_model.dart';
+import '../../features/flashcard/presentation/flashcard_form_page.dart';
+import '../../features/flashcard/presentation/flashcard_list_page.dart';
 import '../../features/flashcard/presentation/flashcard_session_page.dart';
 import '../../features/flashcard/presentation/flashcard_result_page.dart';
+import '../../features/flashcard/presentation/study_setup_page.dart';
 import '../../features/notes/presentation/medical_notes_page.dart';
 import '../../features/notes/presentation/note_detail_page.dart';
 import '../../features/notes/presentation/note_editor_page.dart';
 import '../../features/profile/presentation/profile_page.dart';
-import '../../features/ai_assistant/presentation/ai_chat_page.dart';
+import '../../features/documents/presentation/document_chat_page.dart';
+import '../../features/documents/presentation/documents_page.dart';
 import '../../features/ai_assistant/presentation/ai_quiz_page.dart';
 import '../../features/ai_assistant/presentation/ai_explain_page.dart';
 import '../../features/ai_assistant/presentation/ai_summarize_page.dart';
@@ -61,8 +66,46 @@ GoRouter appRouter(AuthService authService) {
         builder: (context, state) => const SettingsPage(),
       ),
       GoRoute(
+        path: '/flashcards/:topicId',
+        builder: (context, state) {
+          final topicId = state.pathParameters['topicId'];
+          if (topicId == null || topicId.isEmpty) {
+            return const StudySetupPage();
+          }
+          return FlashcardListPage(
+            topicId: topicId,
+            topicName: state.extra is String ? state.extra as String : null,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/flashcards/:topicId/new',
+        builder: (context, state) =>
+            FlashcardFormPage(topicId: state.pathParameters['topicId'] ?? ''),
+      ),
+      GoRoute(
+        path: '/flashcards/:topicId/:id/edit',
+        builder: (context, state) => FlashcardFormPage(
+          topicId: state.pathParameters['topicId'] ?? '',
+          flashcardId: state.pathParameters['id'] ?? '',
+        ),
+      ),
+      GoRoute(
+        path: '/study/flashcards/setup',
+        builder: (context, state) => StudySetupPage(
+          initialTopicId: state.uri.queryParameters['topicId'],
+        ),
+      ),
+      GoRoute(
         path: '/study/flashcards/session',
-        builder: (context, state) => const FlashcardSessionPage(),
+        builder: (context, state) {
+          final extra = state.extra;
+          if (extra is StudySessionLaunch) {
+            return FlashcardSessionPage(launch: extra);
+          }
+          // Deep link sin sesión activa: se vuelve al setup.
+          return const StudySetupPage();
+        },
       ),
       GoRoute(
         path: '/study/quizzes',
@@ -79,11 +122,11 @@ GoRouter appRouter(AuthService authService) {
       GoRoute(
         path: '/study/flashcards/result',
         builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>?;
-          return FlashcardResultPage(
-            correct: extra?['correct'] ?? 0,
-            total: extra?['total'] ?? 0,
-          );
+          final extra = state.extra;
+          if (extra is StudySessionResult) {
+            return FlashcardResultPage(result: extra);
+          }
+          return const StudySetupPage();
         },
       ),
       GoRoute(
@@ -124,6 +167,13 @@ GoRouter appRouter(AuthService authService) {
         path: '/ai/summarize',
         builder: (context, state) => const AISummarizePage(),
       ),
+      GoRoute(
+        path: '/documents/:id',
+        builder: (context, state) => DocumentChatPage(
+          documentId: state.pathParameters['id'] ?? '',
+          documentName: state.extra is String ? state.extra as String : null,
+        ),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainShell(navigationShell: navigationShell);
@@ -157,7 +207,7 @@ GoRouter appRouter(AuthService authService) {
             routes: [
               GoRoute(
                 path: '/ai',
-                builder: (context, state) => const AIChatPage(),
+                builder: (context, state) => const DocumentsPage(),
               ),
             ],
           ),

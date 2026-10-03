@@ -260,7 +260,7 @@ class _FlashcardsSection extends StatelessWidget {
             subtitle: l10n.startNewFlashcardSession,
             color: Colors.orange,
             colorScheme: colorScheme,
-            onTap: () {},
+            onTap: () => context.push('/study/flashcards/setup'),
           ),
           const SizedBox(height: 12),
           _StudyCard(
@@ -269,7 +269,7 @@ class _FlashcardsSection extends StatelessWidget {
             subtitle: l10n.cardsWaitingReview('12'),
             color: Colors.blue,
             colorScheme: colorScheme,
-            onTap: () => context.push('/study/flashcards/session'),
+            onTap: () => context.push('/study/flashcards/setup'),
           ),
           const SizedBox(height: 12),
           _StudyCard(

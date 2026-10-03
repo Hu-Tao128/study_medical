@@ -124,5 +124,91 @@
     "featureComingSoon": "Feature coming soon",
     "featureComingSoonMessage": "This feature is under development and will be available soon.",
     "serverConnectionError": "Could not connect to server. Check your internet connection.",
-    "offlineNoteWarning": "You're offline. Changes will sync when you're back online."
+    "offlineNoteWarning": "You're offline. Changes will sync when you're back online.",
+    "answerLabel": "Answer",
+    "studySetupTitle": "Study Session",
+    "studySetupSubtitle": "Pick a topic and start reviewing.",
+    "selectTopicLabel": "Topic",
+    "cardsPerSessionLabel": "Cards per session",
+    "cardsCount": "{count} cards",
+    "@cardsCount": {
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "studyModeLabel": "Mode",
+    "modeFlashcards": "Flashcards",
+    "modeQuiz": "Quiz",
+    "modeCases": "Clinical cases",
+    "startStudyButton": "Start",
+    "noTopicsAvailable": "No topics available",
+    "noFlashcardsInTopic": "This topic has no flashcards yet",
+    "sessionProgress": "{current} of {total}",
+    "@sessionProgress": {
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "tapToReveal": "Tap to reveal the answer",
+    "rateYourRecall": "How well did you recall it?",
+    "ratingAgain": "Again",
+    "ratingHard": "Hard",
+    "ratingGood": "Good",
+    "ratingEasy": "Easy",
+    "ratingPerfect": "Perfect",
+    "accuracyLabel": "Accuracy",
+    "studyAgainButton": "Study again",
+    "backToHomeButton": "Back to home",
+    "sessionSubmitFailed": "Could not save the session",
+    "answerUnavailable": "Answer not available",
+    "progressByTopicTitle": "Progress by topic",
+    "progressEmpty": "Complete a study session to see your progress",
+    "manageFlashcards": "Manage flashcards",
+    "newFlashcard": "New flashcard",
+    "editFlashcard": "Edit flashcard",
+    "questionLabel": "Question",
+    "difficultyLabel": "Difficulty",
+    "deleteFlashcardTitle": "Delete flashcard",
+    "deleteFlashcardMessage": "This action cannot be undone.",
+    "deleteLabel": "Delete",
+    "flashcardSaved": "Flashcard saved",
+    "flashcardDeleted": "Flashcard deleted",
+    "noFlashcardsYet": "No flashcards in this topic yet",
+    "createFirstFlashcard": "Create the first one",
+    "studyTopicButton": "Study this topic",
+    "fieldRequired": "This field is required",
+    "visibilityLabel": "Visibility",
+    "visibilityPrivate": "Only me",
+    "visibilityPublic": "Public",
+    "visibilityGroup": "My group (coming soon)",
+    "myDocuments": "My documents",
+    "uploadPdf": "Upload PDF",
+    "uploadPdfHint": "Upload a PDF to ask questions only about your file.",
+    "noDocuments": "No documents yet",
+    "documentReady": "Ready",
+    "documentProcessing": "Processing...",
+    "documentPending": "Pending",
+    "documentFailed": "Could not process",
+    "documentUploaded": "Document uploaded",
+    "documentUploadFailed": "Could not upload the document",
+    "documentReadFailed": "Could not read the file",
+    "aiNotConfigured": "AI is not configured on the server",
+    "askAboutDocument": "Ask this document. Answers cite the page.",
+    "askHint": "Type your question...",
+    "citations": "Citations",
+    "pageLabel": "Page {page}",
+    "@pageLabel": {
+        "placeholders": {
+            "page": {
+                "type": "String"
+            }
+        }
+    }
 }

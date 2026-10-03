@@ -1,11 +1,14 @@
 import 'dart:developer' as developer;
 
 import '../../features/cases/data/clinical_case_model.dart';
+import '../../features/documents/data/document_model.dart';
 import '../../features/flashcard/data/flashcard_model.dart';
+import '../../features/flashcard/data/study_session_model.dart';
 import '../../features/groups/data/chat_message_model.dart';
 import '../../features/notes/data/note_model.dart';
 import '../../features/profile/data/user_profile_model.dart';
 import '../../features/quizzes/data/quiz_model.dart';
+import '../../features/stats/data/progress_radar_model.dart';
 import '../../features/study/data/medical_search_result.dart';
 import 'package:dio/dio.dart';
 import 'backend_api_client.dart';
@@ -130,6 +133,80 @@ class BackendApi {
         .whereType<Map<String, dynamic>>()
         .map(FlashcardModel.fromJson)
         .toList(growable: false);
+  }
+
+  Future<FlashcardModel> getFlashcardById(String id) async {
+    final response = await _client.get<Map<String, dynamic>>(
+      '/api/v1/flashcards/$id',
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(message: 'Flashcard no encontrada');
+    }
+    return FlashcardModel.fromJson(data);
+  }
+
+  Future<FlashcardModel> updateFlashcard(
+    String id,
+    CreateFlashcardRequest request,
+  ) async {
+    final response = await _client.put<Map<String, dynamic>>(
+      '/api/v1/flashcards/$id',
+      data: request.toJson(),
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(message: 'Flashcard no actualizada');
+    }
+    return FlashcardModel.fromJson(data);
+  }
+
+  Future<void> deleteFlashcard(String id) async {
+    await _client.delete<void>('/api/v1/flashcards/$id');
+  }
+
+  Future<StudySessionResponse> startStudySession({
+    required String topicId,
+    String mode = 'FLASHCARDS',
+    int? limit,
+  }) async {
+    final response = await _client.post<Map<String, dynamic>>(
+      '/api/v1/study-sessions/start',
+      data: {
+        'topicId': topicId,
+        'mode': mode,
+        if (limit != null) 'limit': limit,
+      },
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(
+        message: 'No se pudo iniciar la sesión de estudio',
+      );
+    }
+    return StudySessionResponse.fromJson(data);
+  }
+
+  Future<StudySessionResult> submitStudySession({
+    required String sessionId,
+    required String topicId,
+    required List<StudyAttempt> attempts,
+  }) async {
+    final response = await _client.post<Map<String, dynamic>>(
+      '/api/v1/study-sessions/submit',
+      data: {
+        'sessionId': sessionId,
+        'topicId': topicId,
+        'attempts': attempts.map((attempt) => attempt.toJson()).toList(),
+      },
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(
+        message: 'No se pudo guardar la sesión de estudio',
+      );
+    }
+    return StudySessionResult.fromJson(data);
   }
 
   Future<QuizModel> createQuiz(CreateQuizRequest request) async {
@@ -364,5 +441,71 @@ class BackendApi {
       final map = e as Map<String, dynamic>;
       return {'id': map['id'] as String, 'name': map['name'] as String};
     }).toList();
+  }
+
+  Future<UserDocumentModel> uploadDocument({
+    required String filename,
+    required List<int> bytes,
+    String? contentType,
+  }) async {
+    final formData = FormData.fromMap({
+      'file': MultipartFile.fromBytes(
+        bytes,
+        filename: filename,
+        contentType: DioMediaType.parse(contentType ?? 'application/pdf'),
+      ),
+    });
+    final response = await _client.post<Map<String, dynamic>>(
+      '/api/v1/documents',
+      data: formData,
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(message: 'No se pudo subir el documento');
+    }
+    return UserDocumentModel.fromJson(data);
+  }
+
+  Future<List<UserDocumentModel>> getDocuments() async {
+    final response = await _client.get<List<dynamic>>('/api/v1/documents');
+    final data = response.data;
+    if (data == null) {
+      return const [];
+    }
+    return data
+        .whereType<Map<String, dynamic>>()
+        .map(UserDocumentModel.fromJson)
+        .toList(growable: false);
+  }
+
+  Future<DocumentQueryResult> queryDocument(
+    String documentId,
+    String question, {
+    int? topK,
+  }) async {
+    final response = await _client.post<Map<String, dynamic>>(
+      '/api/v1/documents/$documentId/query',
+      data: {'question': question, if (topK != null) 'topK': topK},
+    );
+    final data = response.data;
+    if (data == null) {
+      throw const BackendApiException(message: 'Respuesta vacía del asistente');
+    }
+    return DocumentQueryResult.fromJson(data);
+  }
+
+  Future<List<ProgressRadarTopic>> getProgressRadar() async {
+    final response = await _client.get<Map<String, dynamic>>(
+      '/api/v1/progress/radar',
+    );
+    final data = response.data;
+    if (data == null) {
+      return const [];
+    }
+    return (data['topics'] as List?)
+            ?.whereType<Map<String, dynamic>>()
+            .map(ProgressRadarTopic.fromJson)
+            .toList(growable: false) ??
+        const [];
   }
 }

@@ -11,8 +11,6 @@ import 'core/network/backend_api.dart';
 import 'features/auth/data/auth_service.dart';
 import 'features/auth/data/token_repository.dart';
 import 'features/flashcard/data/flashcard_model.dart';
-import 'features/flashcard/data/flashcard_repository.dart';
-import 'features/flashcard/presentation/providers/flashcard_provider.dart';
 import 'features/notes/data/note_local_repository.dart';
 import 'features/notes/data/note_model_adapter.dart';
 import 'features/notes/data/note_repository.dart';
@@ -109,12 +107,6 @@ void main() async {
         Provider<TokenRepository>.value(value: tokenRepository),
         ChangeNotifierProvider(
           create: (_) => AuthService(backendApi, tokenRepository),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => FlashcardProvider(
-            repository: FlashcardRepository(),
-            backendApi: backendApi,
-          ),
         ),
         ChangeNotifierProvider.value(value: noteProvider),
       ],

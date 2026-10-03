@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../profile/presentation/providers/profile_provider.dart';
+import '../../stats/presentation/widgets/progress_radar_section.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
           slivers: [
             SliverToBoxAdapter(child: _Header(l10n: l10n)),
             SliverToBoxAdapter(child: _DailyGoalProgress()),
+            const SliverToBoxAdapter(child: ProgressRadarSection()),
             SliverToBoxAdapter(child: _QuickAccessButtons()),
             SliverToBoxAdapter(child: _FeaturedSection(context: context)),
             SliverToBoxAdapter(child: _LearningPathSection()),

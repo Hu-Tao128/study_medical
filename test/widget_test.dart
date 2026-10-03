@@ -7,8 +7,6 @@ import 'package:study_medical/app.dart';
 import 'package:study_medical/features/auth/data/auth_service.dart';
 import 'package:study_medical/features/settings/presentation/providers/theme_provider.dart';
 import 'package:study_medical/features/settings/presentation/providers/locale_provider.dart';
-import 'package:study_medical/features/flashcard/presentation/providers/flashcard_provider.dart';
-import 'package:study_medical/features/flashcard/data/flashcard_model.dart';
 import 'package:study_medical/core/theme/theme_repository.dart';
 import 'package:study_medical/core/theme/color_seed.dart';
 
@@ -99,24 +97,6 @@ class FakeLocaleProvider extends ChangeNotifier implements LocaleProvider {
   String getLanguageName(Locale locale) => 'English';
 }
 
-class FakeFlashcardProvider extends ChangeNotifier
-    implements FlashcardProvider {
-  @override
-  List<FlashcardModel> get flashcards => [];
-
-  @override
-  bool get isLoading => false;
-
-  @override
-  String? get error => null;
-
-  @override
-  String get currentTopicId => 'test-topic';
-
-  @override
-  Future<void> loadFlashcards({String? topicId}) async {}
-}
-
 void main() {
   testWidgets('App smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -128,9 +108,6 @@ void main() {
           ),
           ChangeNotifierProvider<LocaleProvider>.value(
             value: FakeLocaleProvider(),
-          ),
-          ChangeNotifierProvider<FlashcardProvider>.value(
-            value: FakeFlashcardProvider(),
           ),
         ],
         child: const MyApp(),
